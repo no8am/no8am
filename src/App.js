@@ -200,9 +200,7 @@ export default function App(props) {
 			// let courseList = await response.json();
 			// let seats = await seats_response.json();
 			
-			let courseList = courseListRaw;
-			let seats = seatsRaw;
-			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
+			const courseList = courseListRaw.sort((a, b) => a.Crn - b.Crn);
 			
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
@@ -238,7 +236,7 @@ export default function App(props) {
 				setCoursesList(courseList_cleaned);
 				setRequirementList([...requirementList]);
 				setInstructorList([...instructorList]);
-				setSeats(seats);
+				setSeats(seatsRaw);
 			}
 		})();
 		return () => {
