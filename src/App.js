@@ -354,7 +354,7 @@ export default function App(props) {
 		    />
 		    <div className={classes.bottomText}>
 		    	<p className={classes.classHour}> {classHour} class hours </p>
-		    	<p className={classes.shamelessplug}>© 2020 no8am{'\u00B2'} • <a href="github.com"> Github </a> • Jimmy Wei '20</p>
+		    	<p className={classes.shamelessplug}>© 2020 no8am{'\u00B2'} • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>
 	    	</div>
 	    </div>
 	    <Schedule
