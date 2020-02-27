@@ -9,7 +9,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
-import { courseListRaw, seatsRaw } from './data';
+// import { courseListRaw, seatsRaw } from './data';
 
 const useStyles = makeStyles(theme => ({
 	bottomText: {
@@ -195,12 +195,12 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
-			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
-			// let courseList = await response.json();
-			// let seats = await seats_response.json();
+			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
+			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
+			let courseList = await response.json();
+			let seats = await seats_response.json();
 			
-			const courseList = courseListRaw.sort((a, b) => a.Crn - b.Crn);
+			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
 			
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
@@ -236,7 +236,7 @@ export default function App(props) {
 				setCoursesList(courseList_cleaned);
 				setRequirementList([...requirementList]);
 				setInstructorList([...instructorList]);
-				setSeats(seatsRaw);
+				setSeats(seats);
 			}
 		})();
 		return () => {
