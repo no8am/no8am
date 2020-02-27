@@ -76,7 +76,6 @@ const formatMeetingTime = meetings => {
         minute: endText.slice(2,)
       }
       let weekDays = "";
-      let weekDay;
       if (meeting.M === "Y") weekDays += "M";
       if (meeting.T === "Y") weekDays += "T";
       if (meeting.W === "Y") weekDays += "W";

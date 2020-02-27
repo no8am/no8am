@@ -9,9 +9,17 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
-// import { courseListRaw, seatsRaw } from './data';
+import { courseListRaw, seatsRaw } from './data';
+import { ListboxComponent } from './virtualization';
+
 
 const useStyles = makeStyles(theme => ({
+	listbox: {
+	  '& ul': {
+	    padding: 0,
+	    margin: 0,
+	  },
+	},
 	bottomText: {
 		position: "absolute",
 		bottom: 0,
@@ -195,13 +203,14 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
-			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
-			let courseList = await response.json();
-			let seats = await seats_response.json();
-			
+			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
+			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
+			// let courseList = await response.json();
+			// let seats = await seats_response.json();
+			let courseList = courseListRaw;
+			let seats = seatsRaw;
 			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
-			
+			courseList = courseList.slice(0, 100);
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
 			let courseList_cleaned = []
@@ -248,17 +257,18 @@ export default function App(props) {
 		<div className={classes.app} style={{ width, height }}>
 			<div className={classes.courseSelector} style={{ width: width*0.4, height}}>
 				<Autocomplete
-					size={width < 600 ? "small" : "medium"}
-					style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
+				  size={width < 600 ? "small" : "medium"}
+				  style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
+				  ListboxComponent={ListboxComponent}
 				  loading={loading}
 				  autoHighlight
 				  filterSelectedOptions
 				  multiple
 				  onChange={(e, courses) => setCourses(courses) }
 				  id="add-course-autocomplete"
-		      options={filteredCourseList}
-		      getOptionLabel={option => option.title}
-		      renderInput={params => (
+		          options={filteredCourseList}
+		          getOptionLabel={option => option.title}
+		          renderInput={params => (
 		        <TextField
 		          {...params}
 		          label="Add Course (*click chip to select section)"
