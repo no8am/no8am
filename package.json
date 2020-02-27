@@ -21,6 +21,7 @@
     "cross-fetch": "^3.0.4",
     "d3-array": "^2.4.0",
     "d3-scale-chromatic": "^1.5.0",
+    "file-saver": "^2.0.2",
     "react": "^16.12.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.12.0",
