@@ -197,9 +197,9 @@ export default function App(props) {
 		}
 		(async () => {
 			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
-			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
+			//const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
 			let courseList = await response.json();
-			let seats = await seats_response.json();
+			//let seats = await seats_response.json();
 			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
 			
 			// Merge different sections of the same class into one object.
@@ -236,7 +236,7 @@ export default function App(props) {
 				setCoursesList(courseList_cleaned);
 				setRequirementList([...requirementList]);
 				setInstructorList([...instructorList]);
-				setSeats(seats);
+				//setSeats(seats);
 			}
 		})();
 		return () => {
