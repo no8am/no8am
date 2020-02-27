@@ -1,5 +1,4 @@
 import React from 'react';
-import { ParentSize } from '@vx/responsive';
 import { Group } from '@vx/group';
 import { AxisLeft, AxisTop } from '@vx/axis';
 import { Bar } from '@vx/shape';

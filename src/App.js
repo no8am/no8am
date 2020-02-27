@@ -5,8 +5,6 @@ import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { GradientPinkBlue } from '@vx/gradient';
-import { Bar } from '@vx/shape';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
