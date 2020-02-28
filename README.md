@@ -12,4 +12,4 @@ npm start
 ## License
 
 ## Tribute
-This project was inspired by [no8am](https://github.com/nowyasimi/no8am) and [semesterly](https://github.com/noahpresler/semesterly).
+This project was inspired by [no8am](https://github.com/nowyasimi/no8am) @nowyasimi and [semesterly](https://github.com/noahpresler/semesterly).
