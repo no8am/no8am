@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import fetch from 'cross-fetch';
+// import fetch from 'cross-fetch';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade } from '@material-ui/core';
