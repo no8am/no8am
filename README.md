@@ -4,6 +4,7 @@
   https://no8am.life </br>
   <img src="https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png">
 </p>
+
 ## Develop
 ```bash
 git clone https://github.com/icewing1996/no8am-2.git && cd no8am-2
