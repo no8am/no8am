@@ -1,7 +1,7 @@
 # no8am²
 Help Bucknell students easily create their schedules each semester.  
-<center>https://no8am.life  </center>
 ![alt text](https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png "no8am²")
+https://no8am.life
 ## Develop
 ```bash
 git clone https://github.com/icewing1996/no8am-2.git && cd no8am-2
