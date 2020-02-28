@@ -203,14 +203,15 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
-			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
-			// let courseList = await response.json();
-			// let seats = await seats_response.json();
-			let courseList = courseListRaw;
-			let seats = seatsRaw;
+			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
+			console.log(response)
+			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
+			console.log(response)
+			let courseList = await response.json();
+			let seats = await seats_response.json();
+			//let courseList = courseListRaw;
+			//let seats = seatsRaw;
 			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
-			courseList = courseList.slice(0, 100);
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
 			let courseList_cleaned = []
