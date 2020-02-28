@@ -9,7 +9,6 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
-import { courseListRaw, seatsRaw } from './data';
 import { ListboxComponent } from './virtualization';
 
 
