@@ -1,6 +1,6 @@
 # no8am²
-Course Selection Made Easier.
-https://no8am.life
+Help Bucknell students easily create their schedules each semester.  
+<center>https://no8am.life  </center>
 ![alt text](https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png "no8am²")
 ## Develop
 ```bash
@@ -10,6 +10,7 @@ npm start
 ```
 
 ## License
+This project is licensed under the terms of the The GNU General Public License v3.0.
 
 ## Tribute
-This project was inspired by [no8am](https://github.com/nowyasimi/no8am) @nowyasimi and [semesterly](https://github.com/noahpresler/semesterly).
+This project was inspired by [no8am](https://github.com/nowyasimi/no8am) and [semesterly](https://github.com/noahpresler/semesterly).
