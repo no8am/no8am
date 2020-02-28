@@ -1,8 +1,8 @@
 # no8am²
 <p align="center">
   Help Bucknell students easily create their schedules each semester. </br>
+  https://no8am.life </br>
   <img src="https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png">
-  https://no8am.life
 </p>
 ## Develop
 ```bash
