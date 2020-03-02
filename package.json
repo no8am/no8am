@@ -19,6 +19,7 @@
     "react": "^16.12.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.12.0",
+    "react-ga": "^2.7.0",
     "react-scripts": "3.4.0",
     "react-window": "^1.8.5",
     "typeface-roboto": "0.0.75"
