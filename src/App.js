@@ -317,7 +317,7 @@ export default function App(props) {
 			      }}
 			      renderTags={(value, getTagProps) =>
 			        value.map((option, index) => (
-			        	<motion.div whileHover={{scale:1.1}} whileTap={{scale:0.95}}>
+			        	<motion.div whileHover={{scale:1.1}} >
 			          <Chip
 			          	onClick={()=>handleOpen(option)}
 			          	style={{backgroundColor:option.color}}
