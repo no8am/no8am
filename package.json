@@ -16,6 +16,7 @@
     "autosuggest-highlight": "^3.1.1",
     "cross-fetch": "^3.0.4",
     "d3-scale-chromatic": "^1.5.0",
+    "framer-motion": "^1.9.1",
     "react": "^16.12.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.12.0",

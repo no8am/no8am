@@ -6,27 +6,41 @@ import { scaleLinear, scaleBand } from '@vx/scale';
 import { Text } from '@vx/text';
 import { weekDayMap, weekDayMapShort, weekDayMapSuperShort, first_class, last_class } from './constants';
 import { timeToMinute, time2Str } from './utils';
+import { motion } from 'framer-motion';
 
 const HoverText = props => {
   const [text, setText] = React.useState(props.default);
+  const {barX, barY, color, fontSize, opacity, barWidth, barHeight, textOffset, defaultText, mouseOverText } = props;
   return (
-    <Text
-      x={props.x}
-      y={props.y}
-      width={props.width}
-      height={props.height}
-      fontSize={props.fontSize}
-      textAnchor="middle"
-      verticalAnchor="start"
-      onMouseOver={e => setText(props.mouseover)}
-      onMouseLeave={e => setText(props.default)}
-      style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Roboto"}}
+    <motion.g onMouseOver={e => setText(mouseOverText)}
+        onMouseLeave={e => setText(defaultText)}
+        whileHover={{scale:1.2}} whileTap={{scale:0.95}}
+      
     >
-      {text}
-    </Text>
+      <Bar    
+        x={barX}
+        y={barY}
+        width={barWidth}
+        height={barHeight}
+        fill={color}
+        opacity={opacity}
+      />
+      <Text
+        x={barX+barWidth/2}
+        y={barY+textOffset}
+        width={barWidth}
+        height={barHeight}
+        fontSize={fontSize}
+        textAnchor="middle"
+        verticalAnchor="start"
+        style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Roboto"}}
+      >
+      {text ? text : defaultText}
+      </Text>
+    </motion.g>
   )
 }
-
+  
 // Set up left axis ticks (every hour from first_class to last_class)
 let tickValues = [];
 let time_offset = 0;
@@ -144,25 +158,19 @@ export default class Schedule extends React.Component {
               const barX = xScale(weekDay);
               const barY = yScale(start);
               return (
-                <Group key={`${courseTitle}-${i}`}>
-                  <Bar
-                    x={barX}
-                    y={barY}
-                    width={barWidth}
-                    height={barHeight}
-                    fill={color}
-                    opacity={interval.temp ? 0.5 : 1}
-                  />
-                  <HoverText
+                <HoverText
+                    key={`${courseTitle}-${i}`}
+                    color={color}
                     fontSize={fontSize}
-                    x={barX+barWidth/2}
-                    y={barY+textOffset}
-                    width={barWidth}
-                    height={barHeight}
-                    default={courseTitle}
-                    mouseover={`${startText} ${endText}`}
-                  />
-                </Group>
+                    barX={barX}
+                    barY={barY}
+                    barWidth={barWidth}
+                    barHeight={barHeight}
+                    textOffset={textOffset}
+                    defaultText={courseTitle}
+                    mouseOverText={`${startText} ${endText}`}
+                    opacity={interval.temp ? 0.5 : 1}
+                />
               )
             })}
           </Group>

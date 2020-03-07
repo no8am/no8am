@@ -47,8 +47,8 @@ export const formatTitle = course => {
 
 // For modal table, display course section selection
 export function createRow(section_obj, seats_table) {
-  console.log(seats_table, section_obj.Id)
   const section = section_obj.Section;
+  const crn = section_obj.Crn;
   const time = section_obj.Meetings;
   const room = section_obj.Meetings;
   const instructor = section_obj.Instructors;
@@ -56,7 +56,7 @@ export function createRow(section_obj, seats_table) {
   const credit = section_obj.Credit;
   const key = section_obj.Title + section; // for render list in React
   const title = `${section_obj.Subj} ${section_obj.Number} - ${section_obj.Title}`;
-  return { section, time, room, instructor, seats, credit, key, title, section_obj };
+  return { section, crn, time, room, instructor, seats, credit, key, title, section_obj };
 }
 
 
@@ -102,9 +102,9 @@ const formatInstructor = instructors => {
 
 // Section Time Room Instructor Seats Credit Footnote 
 export const columns = [
-  { id: 'section', 
-    label: 'Section', 
-    minWidth: 5, 
+  { id: 'crn',
+    label: 'CRN',
+    minWidth: 5,
   },
   { id: 'time',
     label: 'Time', 

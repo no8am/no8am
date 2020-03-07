@@ -11,6 +11,8 @@ import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
 import { ListboxComponent } from './virtualization';
 import { seatsRaw, courseListRaw } from './data';
+import { motion } from 'framer-motion';
+
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -216,8 +218,8 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202001');
-			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202005/seats');
+			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202101');
+			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202101/seats');
 			// let courseList = await response.json();
 			// let seats = await seats_response.json();
 			// console.log(JSON.stringify(courseList))
@@ -315,6 +317,7 @@ export default function App(props) {
 			      }}
 			      renderTags={(value, getTagProps) =>
 			        value.map((option, index) => (
+			        	<motion.div whileHover={{scale:1.1}} whileTap={{scale:0.95}}>
 			          <Chip
 			          	onClick={()=>handleOpen(option)}
 			          	style={{backgroundColor:option.color}}
@@ -325,6 +328,7 @@ export default function App(props) {
 			              </section>
 			            )}
 			          	{...getTagProps({ index })} />
+			          	</motion.div>
 			        ))
 			      }
 			    />
