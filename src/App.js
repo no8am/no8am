@@ -9,8 +9,8 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
-import { ListboxComponent } from './virtualization';
-import { seatsRaw, courseListRaw } from './data';
+// import { ListboxComponent } from './virtualization';
+// import { seatsRaw, courseListRaw } from './data';
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -216,15 +216,15 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202101');
-			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202101/seats');
-			// let courseList = await response.json();
-			// let seats = await seats_response.json();
-			// console.log(JSON.stringify(courseList))
-			// console.log(JSON.stringify(seats))
+			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202105');
+			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202105/seats');
+			let courseList = await response.json();
+			let seats = await seats_response.json();
+			console.log(JSON.stringify(courseList))
+			console.log(JSON.stringify(seats))
 			
-			let courseList = courseListRaw;
-			let seats = seatsRaw;
+			// let courseList = courseListRaw;
+			// let seats = seatsRaw;
 			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
@@ -361,7 +361,7 @@ export default function App(props) {
 					  id="add-instructor-autocomplete"
 			      options={instructorList}
 			      style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-			      renderInput={params => <TextField {...params} label="Insturctor" variant="outlined" />}
+			      renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
 			      renderOption={(option, { inputValue }) => {
 			      	// Highlight parts of text that matches input
 			        const matches = match(option, inputValue);
@@ -379,7 +379,7 @@ export default function App(props) {
 			    />
 			    <div className={classes.bottomText}>
 			    	<p className={classes.classHour}> {classHour} class hours </p>
-			    	<p className={classes.shamelessplug}>© 2020 no8am² • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>
+			    	<p className={classes.shamelessplug}>© 2020 no8am.v3 • <a href="https://github.com/ndemarchis/no8am-3"> Github </a> • Nick DeMarchis '22</p>
 		    	</div>
 		    </div>
 		    <div/>
