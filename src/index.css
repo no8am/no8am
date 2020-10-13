@@ -12,10 +12,10 @@ code {
     monospace;
 }
 
-.pchip: {
+/* .pchip: {
   white-space: 'nowrap';
   overflow: 'hidden';
   text-overflow: 'ellipsis';
   max-width: '20rem';
-  font-family: 'Roboto';
-}
+  /* font-family: 'Roboto'; */
+/* } */

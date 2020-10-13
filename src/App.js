@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
 		textAlign: "center",
 		fontWeight: "bold",
 	},
+	credits: {
+		textAlign: "center",
+		fontWeight: "bold",
+	},
 	app: {
 		display: "flex",
 		[theme.breakpoints.down('xs')]: {
@@ -45,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 	    [theme.breakpoints.up('sm')]: {
 	      flexDirection: "row",	
 	    },
-		background: "linear-gradient(0deg, rgba(113,140,187,1) 0%, rgba(240,137,6,0.3124613569985971) 100%);",
+		background: "linear-gradient(0deg, rgba(29,78,137,1) 0%, rgba(196,233,222,1) 100%);",
 	},
 	schedule: {
 		flex: 1,
@@ -72,11 +76,11 @@ const useStyles = makeStyles(theme => ({
   modalTitle: {
   	marginLeft: 30,
   	marginTop: 30,
-  	fontFamily: "Roboto"
+  	fontFamily: "Prompt"
   },
   modalCCC: {
   	marginLeft: 45,
-  	fontFamily: "Roboto"
+  	fontFamily: "Prompt"
   },
 }));
 
@@ -104,6 +108,7 @@ export default function App(props) {
 	const [courses, setCourses] = React.useState([]); // currently selected courses on schedule
 	const [sections, setSections] = React.useState([]); // currently selected course sections
 	const [classHour, setClassHour] = React.useState(0); // total class hours
+	const [credits, setCredits] = React.useState(0); // total credits
 	const [intervals, setIntervals] = React.useState([]); // a list of [start, end] periods for shcedule display
 	const [tempIntervals, setTempIntervals] = React.useState([]); // same as above, but for previewing when use hovers over section
 	const [seats, setSeats] = React.useState({}); // mapping from course id to # of seats
@@ -185,8 +190,10 @@ export default function App(props) {
   React.useEffect(() => {
   	let intervals = [];
   	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
-  	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;
-  	setClassHour(classHour);
+	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;
+	const credits = 0 // something
+	setClassHour(classHour);
+	setCredits(credits);
   	setIntervals(intervals);
   }, [sections])
 	
@@ -225,7 +232,8 @@ export default function App(props) {
 			
 			// let courseList = courseListRaw;
 			// let seats = seatsRaw;
-			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
+			courseList = courseList.sort((a, b) => a.Subj - b.Subj);
+			// courseList = courseList.sort((a, b) => a.Crn - b.Crn);
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
 			let courseList_cleaned = []
@@ -319,7 +327,7 @@ export default function App(props) {
 			          	onClick={()=>handleOpen(option)}
 			          	style={{backgroundColor:option.color}}
 			          	label={(
-			              <section style={{fontFamily: "Roboto"}}>
+			              <section className="chip">
 			                <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.title}</span>
 			                <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
 			              </section>
@@ -378,8 +386,14 @@ export default function App(props) {
 			      }}
 			    />
 			    <div className={classes.bottomText}>
+					{/* <p className={classes.credits}> {credits} credits</p> */}
 			    	<p className={classes.classHour}> {classHour} class hours </p>
-			    	<p className={classes.shamelessplug}>© 2020 no8am.v3 • <a href="https://github.com/ndemarchis/no8am-3"> Github </a> • Nick DeMarchis '22</p>
+			    	<p className={classes.shamelessplug}>
+						© 2020 no8am.v3 • 
+						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
+						<a href="http://nickdemarchis.com"> Nick DeMarchis '22 </a>
+						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a></p>
+						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a>o <br />This is basically just a reskinned update so...</p>
 		    	</div>
 		    </div>
 		    <div/>
