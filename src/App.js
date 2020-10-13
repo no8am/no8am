@@ -177,7 +177,8 @@ export default function App(props) {
   // Populate modal table when user clicks on a course chip
   React.useEffect(() => {
   	if (!course.sections) return undefined;
-  	const rows = course.sections.map(section => createRow(section, seats))
+  	// const rows = course.sections.map(section => createRow(section, seats))
+  	const rows = course.sections.map(section => createRow(section))
   	setRows(rows);
   }, [course])
 
