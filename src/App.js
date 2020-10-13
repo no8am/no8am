@@ -11,7 +11,7 @@ import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
 // import { ListboxComponent } from './virtualization';
 // import { seatsRaw, courseListRaw } from './data';
-import { courseListRaw } from './2021sp';
+import { courseListRaw , seatsRaw } from './2021sp';
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -178,8 +178,8 @@ export default function App(props) {
   // Populate modal table when user clicks on a course chip
   React.useEffect(() => {
   	if (!course.sections) return undefined;
-  	// const rows = course.sections.map(section => createRow(section, seats))
-  	const rows = course.sections.map(section => createRow(section))
+  	const rows = course.sections.map(section => createRow(section, seats))
+  	// const rows = course.sections.map(section => createRow(section))
   	setRows(rows);
   }, [course])
 
@@ -236,10 +236,10 @@ export default function App(props) {
 			// let seats = await seats_response.json();
 
 			let courseList = courseListRaw;
-			// let seats = seatsRaw;
+			let seats = seatsRaw;
 
-			console.log(JSON.stringify(courseList))
-			console.log(JSON.stringify(seats))
+			// console.log(JSON.stringify(courseList))
+			// console.log(JSON.stringify(seats))
 			
 			courseList = courseList.sort();
 			// courseList = courseList.sort((a, b) => a.Crn - b.Crn);
