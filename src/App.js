@@ -11,6 +11,7 @@ import { colors } from './constants';
 import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
 // import { ListboxComponent } from './virtualization';
 // import { seatsRaw, courseListRaw } from './data';
+import { courseListRaw } from './2021sp';
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -224,16 +225,23 @@ export default function App(props) {
 			return undefined;
 		}
 		(async () => {
-			const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202105');
-			const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202105/seats');
-			let courseList = await response.json();
-			let seats = await seats_response.json();
+			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202105');
+			// const response = fetch('https://nickdemarchis.com/s/bucknell-courses-10-12-2020.json');
+			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202105/seats');
+
+			// const response = await fetch('../public/2021spring');
+			// const seats_response = await fetch('./2021springseats.txt');
+
+			// let courseList = await response.json();
+			// let seats = await seats_response.json();
+
+			let courseList = courseListRaw;
+			// let seats = seatsRaw;
+
 			console.log(JSON.stringify(courseList))
 			console.log(JSON.stringify(seats))
 			
-			// let courseList = courseListRaw;
-			// let seats = seatsRaw;
-			courseList = courseList.sort((a, b) => a.Subj - b.Subj);
+			courseList = courseList.sort();
 			// courseList = courseList.sort((a, b) => a.Crn - b.Crn);
 			// Merge different sections of the same class into one object.
 			// This code is dependent on the structure of the JSON object; unstable
@@ -394,7 +402,7 @@ export default function App(props) {
 						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
 						<a href="http://nickdemarchis.com"> Nick DeMarchis '22 </a>
 						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a></p>
-						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a>o <br />This is basically just a reskinned update so...</p>
+						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> <br />This is basically just a reskinned update so...</p>
 		    	</div>
 		    </div>
 		    <div/>
