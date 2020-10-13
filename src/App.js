@@ -8,10 +8,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { colors } from './constants';
-import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
+import { parseMeetingTimes, parseCredits, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
 // import { ListboxComponent } from './virtualization';
 // import { seatsRaw, courseListRaw } from './data';
 import { courseListRaw , seatsRaw } from './2021sp';
+
+
+/*   TO DO
+
+next
+- CRN output
+- credits selected output
+
+nice to have
+- better section grouping?
+- reframe schedule for late/early classes
+
+*/
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -193,7 +206,7 @@ export default function App(props) {
   	let intervals = [];
   	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
 	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;
-	const credits = 0 // something
+	const credits = courses.map(course => parseCredits(courses)) // something
 	setClassHour(classHour);
 	setCredits(credits);
   	setIntervals(intervals);
@@ -395,7 +408,7 @@ export default function App(props) {
 			      }}
 			    />
 			    <div className={classes.bottomText}>
-					{/* <p className={classes.credits}> {credits} credits</p> */}
+					<p className={classes.credits}> {credits[0] == null ? 0 : credits} credits</p>
 			    	<p className={classes.classHour}> {classHour} class hours </p>
 			    	<p className={classes.shamelessplug}>
 						© 2020 no8am.v3 • 

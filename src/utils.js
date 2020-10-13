@@ -199,3 +199,17 @@ export const parseMeetingTimes = (section, intervals) => {
   }
   return totalLectureTime;
 }
+
+export const parseCredits = (courses) => {
+  let totalCredits = 0
+  let coursi
+  if (courses.length > 0) {
+    for (coursi of courses) {
+      totalCredits += coursi.sections[0].Credit
+    }
+  } else {
+    totalCredits = 0
+  }
+
+  return totalCredits;
+}
