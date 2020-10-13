@@ -408,8 +408,10 @@ export default function App(props) {
 			      }}
 			    />
 			    <div className={classes.bottomText}>
-					<p className={classes.credits}> {credits[0] == null ? 0 : credits} credits</p>
-			    	<p className={classes.classHour}> {classHour} class hours </p>
+					<p className={classes.credits}> {credits[0] == null ? 0 : credits[0]} credits •{' '}
+					{/* </p> */}
+			    	{/* <p className={classes.classHour}> */}
+						 {classHour} class hours </p>
 			    	<p className={classes.shamelessplug}>
 						© 2020 no8am.v3 • 
 						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
