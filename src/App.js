@@ -417,7 +417,8 @@ export default function App(props) {
 						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
 						<a href="http://nickdemarchis.com"> Nick DeMarchis '22 </a>
 						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a></p>
-						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> <br />This is basically just a reskinned update so...</p>
+						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> 
+						<br />Database last updated 10/12/2020.</p>
 		    	</div>
 		    </div>
 		    <div/>

@@ -56,7 +56,8 @@ export function createRow(section_obj, seats_table) {
   const credit = section_obj.Credit;
   const key = section_obj.Title + section; // for render list in React
   const title = `${section_obj.Subj} ${section_obj.Number} - ${section_obj.Title}`;
-  return { section, crn, time, room, instructor, seats, credit, key, title, section_obj };
+  const method = section_obj.DeliveryMethods;
+  return { section, crn, time, room, instructor, seats, credit, key, title, method, section_obj };
 }
 
 
@@ -100,6 +101,18 @@ const formatInstructor = instructors => {
   return result;
 }
 
+const formatMethod = methods => {
+  const result = methods.map(method => reFormatMethod(method)).join("\n");
+
+  return result;
+}
+
+const reFormatMethod = method => {
+  if (method === "RCAR") {return "Classroom and Remote Instruction"}
+  else if (method === "RRMT") {return "Remote Instruction"}
+  else if (method === "RCLA") {return "Classroom Instruction"}
+}
+
 // Section Time Room Instructor Seats Credit Footnote 
 export const columns = [
   { id: 'crn',
@@ -136,6 +149,12 @@ export const columns = [
     align: 'right',
     format: value => value && value.toFixed(1),
   },
+  {
+    id: 'method',
+    label: 'Delivery Method',
+    minWidth: 5,
+    format: value => formatMethod(value),
+  }
 ];
 
 export function useWindowSize() {
