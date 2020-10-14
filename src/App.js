@@ -214,11 +214,11 @@ export default function App(props) {
 	const classHour = (lectureTimes.reduce((a, b) => a + b, 0)) / 60 
 	const credits = courses.map(course => parseCredits(courses)) // something
 	const CRNs = sections.map(section => 
-		<TableRow>
-			<TableCell>
+		<TableRow width="max">
+			<TableCell width="1500px">
 				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
 			</TableCell>
-			<TableCell>
+			<TableCell align="right">
 				{section.Crn}
 			</TableCell>
 		</TableRow>
@@ -429,7 +429,7 @@ export default function App(props) {
 					<p className={classes.credits}> {credits[0] == null ? 0 : credits[0]} credits •{' '}
 						 {classHour} class hours </p>
 			    	<p className={classes.shamelessplug}>
-						© 2020 no8am.v3 • 
+						© 2020 no8am.v3α • 
 						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
 						<a href="http://nickdemarchis.com"> Nick DeMarchis '22 </a>
 						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a>, thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> 
@@ -450,7 +450,7 @@ export default function App(props) {
 				                </TableCell>
 				              ))}
 							  <TableCell
-							  	style={{maxWidth: '2%'}}
+							  	style={{width: '5%'}}
 							  >
 								<IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
 									{openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}

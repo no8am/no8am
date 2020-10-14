@@ -161,12 +161,12 @@ export const CRNcolumns = [
   { id: 'title',
     label: 'Course Title',
     minWidth: 5,
-    align: 'center',
+    align: 'left',
   },
   { id: 'crn',
     label: 'CRN',
     minWidth: 5,
-    align: 'center',
+    align: 'right',
   },
 ];
 
