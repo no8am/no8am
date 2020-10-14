@@ -19,3 +19,7 @@ a:hover {
 .chip {
   font-family: 'Prompt';
 }
+
+.MuiTableCell-root {
+  font-family: "Prompt"
+}

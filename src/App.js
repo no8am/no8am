@@ -3,15 +3,18 @@ import './App.css';
 // import fetch from 'cross-fetch';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { colors } from './constants';
-import { parseMeetingTimes, parseCredits, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
+import { colors, colors2 } from './constants';
+import { parseMeetingTimes, parseCredits, useWindowSize, hashStr, createRow, columns, CRNcolumns, formatTitle } from './utils';
 // import { ListboxComponent } from './virtualization';
 // import { seatsRaw, courseListRaw } from './data';
 import { courseListRaw , seatsRaw } from './2021sp';
+
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 /*   TO DO
@@ -123,6 +126,7 @@ export default function App(props) {
 	const [sections, setSections] = React.useState([]); // currently selected course sections
 	const [classHour, setClassHour] = React.useState(0); // total class hours
 	const [credits, setCredits] = React.useState(0); // total credits
+	const [CRNs, setCRNs] = React.useState([]); // currently selected CRNs
 	const [intervals, setIntervals] = React.useState([]); // a list of [start, end] periods for shcedule display
 	const [tempIntervals, setTempIntervals] = React.useState([]); // same as above, but for previewing when use hovers over section
 	const [seats, setSeats] = React.useState({}); // mapping from course id to # of seats
@@ -136,6 +140,7 @@ export default function App(props) {
 	
 	// Modal/ Table
 	const [open, setOpen] = React.useState(false);
+	const [openi, setOpeni] = React.useState(false);
 	const [rows, setRows] = React.useState([]);
 	const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 	
@@ -205,11 +210,23 @@ export default function App(props) {
   React.useEffect(() => {
   	let intervals = [];
   	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
-	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;
+	// const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
+	const classHour = (lectureTimes.reduce((a, b) => a + b, 0)) / 60 
 	const credits = courses.map(course => parseCredits(courses)) // something
+	const CRNs = sections.map(section => 
+		<TableRow>
+			<TableCell>
+				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
+			</TableCell>
+			<TableCell>
+				{section.Crn}
+			</TableCell>
+		</TableRow>
+	);
 	setClassHour(classHour);
 	setCredits(credits);
-  	setIntervals(intervals);
+	setIntervals(intervals);
+	setCRNs(CRNs);
   }, [sections])
 	
 	// Helper function for filtering courses
@@ -264,11 +281,11 @@ export default function App(props) {
 				sections: [],
 				title: formatTitle(courseList[0]),
 				department: courseList[0].DeptCodes[0],
-				color: colors[hashStr(formatTitle(courseList[0])) % colors.length],
+				color: colors2[hashStr(formatTitle(courseList[0])) % colors2.length],
 			}
 			for (course of courseList) {
 				const title = formatTitle(course);
-				const color = colors[hashStr(title) % colors.length];
+				const color = colors2[hashStr(title) % colors2.length];
 					
 				if (title === currentCourse.title) {
 					currentCourse.sections.push({...course, color})
@@ -407,19 +424,50 @@ export default function App(props) {
 			        );
 			      }}
 			    />
-			    <div className={classes.bottomText}>
+				<div className={classes.bottomText}>
+					{/* <p className={classes.CRNs}> {CRNs} CRNs</p> */}
 					<p className={classes.credits}> {credits[0] == null ? 0 : credits[0]} credits •{' '}
-					{/* </p> */}
-			    	{/* <p className={classes.classHour}> */}
 						 {classHour} class hours </p>
 			    	<p className={classes.shamelessplug}>
 						© 2020 no8am.v3 • 
 						<a href="https://github.com/ndemarchis/no8am-3"> Github </a> • 
 						<a href="http://nickdemarchis.com"> Nick DeMarchis '22 </a>
-						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a></p>
-						<p style={{textAlign: 'center'}}>Thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> 
+						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5">Suggest a feature</a>, thanks to <a href="https://github.com/icewing1996/no8am-2">original creators.</a> 
 						<br />Database last updated 10/12/2020.</p>
 		    	</div>
+				<div className={classes.CRNs} style={{zIndex: 99}}>
+				<TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
+				        <Table stickyHeader size="small" aria-label="sticky table">
+				          <TableHead>
+				            <TableRow>
+				              {CRNcolumns.map(column => (
+				                <TableCell
+				                  key={column.id}
+				                  align={column.align}
+				                  style={{ minWidth: column.minWidth }}
+				                >
+				                  {column.label}
+				                </TableCell>
+				              ))}
+							  <TableCell
+							  	style={{maxWidth: '2%'}}
+							  >
+								<IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
+									{openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+								</IconButton>
+							  </TableCell>
+				            </TableRow>
+				          </TableHead>
+				          <TableBody>
+						  	<Collapse in={openi} open={openi} timeout="auto" unmountOnExit>
+							  <Box margin={1}>
+							  	{CRNs}
+							  </Box>
+							</Collapse>
+				          </TableBody>
+				        </Table>
+			      	</TableContainer>
+				</div>
 		    </div>
 		    <div/>
 	    	<Schedule

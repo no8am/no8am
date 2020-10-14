@@ -157,6 +157,19 @@ export const columns = [
   }
 ];
 
+export const CRNcolumns = [
+  { id: 'title',
+    label: 'Course Title',
+    minWidth: 5,
+    align: 'center',
+  },
+  { id: 'crn',
+    label: 'CRN',
+    minWidth: 5,
+    align: 'center',
+  },
+];
+
 export function useWindowSize() {
   const isClient = typeof window === 'object';
 
