@@ -1,8 +1,8 @@
 # no8am.v3α
 <p align="center">
-  Help Bucknell students easily create their schedules each semester. </br>
-  https://no8am.life </br>
-  <img src="https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png">
+  A super fun, super cool new scheduling system, to help Bucknell students get their schedules together.</br>
+  https://rayschedule.com </br>
+  <!-- <img src="https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png"> -->
 </p>
 
 ## Develop
