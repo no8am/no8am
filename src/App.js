@@ -1,16 +1,23 @@
 import React from 'react';
 import './App.css';
-// import fetch from 'cross-fetch';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { colors } from './constants';
-import { parseMeetingTimes, useWindowSize, hashStr, createRow, columns, formatTitle } from './utils';
-import { ListboxComponent } from './virtualization';
-import { seatsRaw, courseListRaw } from './data';
+import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
+import { parseMeetingTimes, useWindowSize, createRow, columns } from './utils';
+// import { ListboxComponent } from './virtualization';
+import { seats, instructorList, requirementList } from './data';
+import algoliasearch from 'algoliasearch/lite';
+
+
+const searchClient = algoliasearch(
+	ALGOLIA_APP_ID, 
+	ALGOLIA_SEARCH_ONLY_API
+);
+const algoliaIndex = searchClient.initIndex(ALGOLIA_INDEX_NAME);
 
 const useStyles = makeStyles(theme => ({
 	listbox: {
@@ -98,22 +105,19 @@ export default function App(props) {
 	const classes = useStyles();
   
 	// Courses
-	const [courseList, setCoursesList] = React.useState([]); // a list of all the courses
-	const loading = courseList.length === 0;
+	const [query, setQuery] = React.useState(''); // Algolia search queary
 	const [course, setCourse] = React.useState({}); // for section selection of a single course
 	const [courses, setCourses] = React.useState([]); // currently selected courses on schedule
 	const [sections, setSections] = React.useState([]); // currently selected course sections
 	const [classHour, setClassHour] = React.useState(0); // total class hours
 	const [intervals, setIntervals] = React.useState([]); // a list of [start, end] periods for shcedule display
 	const [tempIntervals, setTempIntervals] = React.useState([]); // same as above, but for previewing when use hovers over section
-	const [seats, setSeats] = React.useState({}); // mapping from course id to # of seats
-
+	
 	// Filters
 	const [instructor, setInstructor] = React.useState(null); // currently selected instructor
-	const [instructorList, setInstructorList] = React.useState([]); // a list of all instructor names
 	const [requirements, setRequirements] = React.useState([]);  // currently selected requirements
-	const [requirementList, setRequirementList] = React.useState([]);  // i.e. CCC requirements at Bucknell
 	const [filteredCourseList, setFilteredCourseList] = React.useState([]);
+	// const loading = filteredCourseList.length === 0;
 	
 	// Modal/ Table
 	const [open, setOpen] = React.useState(false);
@@ -191,143 +195,108 @@ export default function App(props) {
   }, [sections])
 	
 	// Helper function for filtering courses
-	const filterCourses = (courseList, requirements, instructor) => {
-		if (requirements.length > 0) {
-			courseList = courseList.filter(c => c.sections.some(s => {
-				  	        const reqs = new Set(s.Reqs.map(req => req.Code + ' - ' + req.Desc));
-				  	        return requirements.every(r => reqs.has(r));
-				  		 }))
-		}
-		if (instructor) {
-			courseList = courseList.filter(c => c.sections.some(s => new Set(s.Instructors.map(i => i.Display)).has(instructor)));
-		}
-		return courseList;					     
-	}
+	// const filterCourses = (courseList, requirements, instructor) => {
+	// 	if (requirements.length > 0) {
+	// 		courseList = courseList.filter(c => c.sections.some(s => {
+	// 			  	        const reqs = new Set(s.Reqs.map(req => req.Code + ' - ' + req.Desc));
+	// 			  	        return requirements.every(r => reqs.has(r));
+	// 			  		 }))
+	// 	}
+	// 	if (instructor) {
+	// 		courseList = courseList.filter(c => c.sections.some(s => new Set(s.Instructors.map(i => i.Display)).has(instructor)));
+	// 	}
+	// 	return courseList;					     
+	// }
 
-	// Update list of searchable courses whenever filters change
-	React.useEffect(() => {	
-		setFilteredCourseList(filterCourses(courseList, requirements, instructor));
-	}, [courseList, requirements, instructor]);
+	// // Update list of searchable courses whenever filters change
+	// React.useEffect(() => {	
+	// 	setFilteredCourseList(filterCourses(courseList, requirements, instructor));
+	// }, [courseList, requirements, instructor]);
 
-	// Async request to populate course list data
 	React.useEffect(() => {
-		let active = true;
-		if (!loading) {
-			return undefined;
-		}
 		(async () => {
-			// const response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/course/term/202101');
-			// const seats_response = await fetch('https://pubapps.bucknell.edu/CourseInformation/data/banner/term/202101/seats');
-			// let courseList = await response.json();
-			// let seats = await seats_response.json();
-			// console.log(JSON.stringify(courseList))
-			// console.log(JSON.stringify(seats))
-			
-			let courseList = courseListRaw;
-			let seats = seatsRaw;
-			courseList = courseList.sort((a, b) => a.Crn - b.Crn);
-			// Merge different sections of the same class into one object.
-			// This code is dependent on the structure of the JSON object; unstable
-			let courseList_cleaned = []
-			let course;
-			let currentCourse = {
-				sections: [],
-				title: formatTitle(courseList[0]),
-				department: courseList[0].DeptCodes[0],
-				color: colors[hashStr(formatTitle(courseList[0])) % colors.length],
-			}
-			for (course of courseList) {
-				const title = formatTitle(course);
-				const color = colors[hashStr(title) % colors.length];
-					
-				if (title === currentCourse.title) {
-					currentCourse.sections.push({...course, color})
-				}
-				else {
-					courseList_cleaned.push({...currentCourse});
-					currentCourse.title = title;
-					currentCourse.sections = [{...course, color}];
-					currentCourse.department = course.DeptCodes[0];
-					currentCourse.color = color;
-				}
-			}
-			courseList_cleaned.push({...currentCourse});
-
-			let requirementList = courseList.reduce((acc, course) => new Set([...acc, ...course.Reqs.map(req => req.Code + ' - ' + req.Desc)]), [])
-			let instructorList = courseList.reduce((acc, course) => new Set([...acc, ...course.Instructors.map(instructor => instructor.Display)]), [])			
-		    	
-			if (active) {
-				setCoursesList(courseList_cleaned);
-				setRequirementList([...requirementList]);
-				setInstructorList([...instructorList]);
-				setSeats(seats);
-			}
+			const CCR_codes = requirements.map(r => r.split('-')[0]);
+			const CCR_filter = CCR_codes.map(c => `sections.Reqs.Code:"${c}"`).join(' AND ')
+			const instructor_filter = instructor ? `sections.Instructors.Display:"${instructor}"` : '';
+			// Horrid ternary conditonal but oh well
+			const filters = (CCR_filter && instructor_filter) ? 
+											[CCR_filter, instructor_filter].join(' AND ') :
+											CCR_filter ? CCR_filter : instructor_filter;
+			algoliaIndex
+				.search(query, { filters })
+				.then(({ hits }) => {
+					setFilteredCourseList(hits)
+				})
 		})();
-		return () => {
-			active = false;
-		}
-	}, [loading]);
+	}, [query, requirements, instructor]);
+
+	const SearchBox = () => (
+		<Autocomplete
+		  size={width < 600 ? "small" : "medium"}
+		  style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
+		  //ListboxComponent={ListboxComponent}
+		  // loading={loading}
+		  autoHighlight
+		  filterSelectedOptions
+		  multiple
+		  onChange={(e, courses) => setCourses(courses) }
+		  onInputChange={(e, query) => setQuery(query) }
+		  id="add-course-autocomplete"
+          options={filteredCourseList}
+          getOptionLabel={option => option.title}
+          renderInput={params => (
+	        <TextField
+	          {...params}
+	          label="Add Course (*click chip to select section)"
+	          variant="outlined"
+	          InputProps={{
+	            ...params.InputProps,
+	            endAdornment: (
+	              <React.Fragment>
+	                {
+	                	//loading ? <CircularProgress color="inherit" size={20} /> : null
+	                }
+	                {params.InputProps.endAdornment}
+	              </React.Fragment>
+	            ),
+	          }}
+	        />
+	      )}
+	      renderOption={(option, { inputValue }) => {
+	        // Highlight parts of text that matches input
+	        const matches = match(option.title, inputValue);
+	        const parts = parse(option.title, matches);
+	        return (
+	          <div>
+	            {parts.map((part, index) => (
+	              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+	                {part.text}
+	              </span>
+	            ))}
+	          </div>
+	        );
+	      }}
+	      renderTags={(value, getTagProps) =>
+	        value.map((option, index) => (
+	          <Chip
+	          	onClick={()=>handleOpen(option)}
+	          	style={{backgroundColor:option.color}}
+	          	label={(
+	              <section style={{fontFamily: "Roboto"}}>
+	                <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.title}</span>
+	                <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
+	              </section>
+	            )}
+	          	{...getTagProps({ index })} />
+	        ))
+	      }
+	    />
+	)
 
 	return (
 		<div className={classes.app} style={{ width, height: appHeight }}>
 			<div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
-				<Autocomplete
-				  size={width < 600 ? "small" : "medium"}
-				  style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
-				  //ListboxComponent={ListboxComponent}
-				  loading={loading}
-				  autoHighlight
-				  filterSelectedOptions
-				  multiple
-				  onChange={(e, courses) => setCourses(courses) }
-				  id="add-course-autocomplete"
-		          options={filteredCourseList}
-		          getOptionLabel={option => option.title}
-		          renderInput={params => (
-			        <TextField
-			          {...params}
-			          label="Add Course (*click chip to select section)"
-			          variant="outlined"
-			          InputProps={{
-			            ...params.InputProps,
-			            endAdornment: (
-			              <React.Fragment>
-			                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-			                {params.InputProps.endAdornment}
-			              </React.Fragment>
-			            ),
-			          }}
-			        />
-			      )}
-			      renderOption={(option, { inputValue }) => {
-			        // Highlight parts of text that matches input
-			        const matches = match(option.title, inputValue);
-			        const parts = parse(option.title, matches);
-			        return (
-			          <div>
-			            {parts.map((part, index) => (
-			              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-			                {part.text}
-			              </span>
-			            ))}
-			          </div>
-			        );
-			      }}
-			      renderTags={(value, getTagProps) =>
-			        value.map((option, index) => (
-			          <Chip
-			          	onClick={()=>handleOpen(option)}
-			          	style={{backgroundColor:option.color}}
-			          	label={(
-			              <section style={{fontFamily: "Roboto"}}>
-			                <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.title}</span>
-			                <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
-			              </section>
-			            )}
-			          	{...getTagProps({ index })} />
-			        ))
-			      }
-			    />
+				{ SearchBox() }
 			    <Autocomplete
 			      size={width < 600 ? "small" : "medium"}
 			      autoHighlight
