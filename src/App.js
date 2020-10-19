@@ -435,7 +435,7 @@ export default function App(props) {
 						<br /><i>"it's better than nothing"</i>
 						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
 						<a href="https://github.com/ndemarchis/no8am-3#current-bugs" target="_blank" rel="noopener noreferrer"> Current bugs</a> 
-						<br />Database last updated 10/12/2020.</p>
+						<br />Database last updated 10/18/2020.</p>
 		    	</div>
 				<div className={classes.CRNs} style={{zIndex: 99}}>
 				<TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
