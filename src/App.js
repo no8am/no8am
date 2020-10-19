@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
@@ -117,7 +117,6 @@ export default function App(props) {
 	const [instructor, setInstructor] = React.useState(null); // currently selected instructor
 	const [requirements, setRequirements] = React.useState([]);  // currently selected requirements
 	const [filteredCourseList, setFilteredCourseList] = React.useState([]);
-	// const loading = filteredCourseList.length === 0;
 	
 	// Modal/ Table
 	const [open, setOpen] = React.useState(false);
@@ -194,25 +193,6 @@ export default function App(props) {
   	setIntervals(intervals);
   }, [sections])
 	
-	// Helper function for filtering courses
-	// const filterCourses = (courseList, requirements, instructor) => {
-	// 	if (requirements.length > 0) {
-	// 		courseList = courseList.filter(c => c.sections.some(s => {
-	// 			  	        const reqs = new Set(s.Reqs.map(req => req.Code + ' - ' + req.Desc));
-	// 			  	        return requirements.every(r => reqs.has(r));
-	// 			  		 }))
-	// 	}
-	// 	if (instructor) {
-	// 		courseList = courseList.filter(c => c.sections.some(s => new Set(s.Instructors.map(i => i.Display)).has(instructor)));
-	// 	}
-	// 	return courseList;					     
-	// }
-
-	// // Update list of searchable courses whenever filters change
-	// React.useEffect(() => {	
-	// 	setFilteredCourseList(filterCourses(courseList, requirements, instructor));
-	// }, [courseList, requirements, instructor]);
-
 	React.useEffect(() => {
 		(async () => {
 			const CCR_codes = requirements.map(r => r.split('-')[0]);
@@ -297,128 +277,128 @@ export default function App(props) {
 		<div className={classes.app} style={{ width, height: appHeight }}>
 			<div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
 				{ SearchBox() }
-			    <Autocomplete
-			      size={width < 600 ? "small" : "medium"}
-			      autoHighlight
-					  multiple
-					  filterSelectedOptions
-					  onChange={(e, reqs) => setRequirements(reqs) }
-					  id="add-requirement-autocomplete"
-			      options={requirementList}
-			      style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-			      renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
-			      renderOption={(option, { inputValue }) => {
-			        // Highlight parts of text that matches input
-			        const matches = match(option, inputValue);
-			        const parts = parse(option, matches);
-			        return (
-			          <div>
-			            {parts.map((part, index) => (
-			              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-			                {part.text}
-			              </span>
-			            ))}
-			          </div>
-			        );
-			      }}
-			    />
-			    <Autocomplete
-			      size={width < 600 ? "small" : "medium"}
-			      autoHighlight
-					  filterSelectedOptions
-					  onChange={(e, instructor) => setInstructor(instructor) }
-					  id="add-instructor-autocomplete"
-			      options={instructorList}
-			      style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-			      renderInput={params => <TextField {...params} label="Insturctor" variant="outlined" />}
-			      renderOption={(option, { inputValue }) => {
-			      	// Highlight parts of text that matches input
-			        const matches = match(option, inputValue);
-			        const parts = parse(option, matches);
-			        return (
-			          <div>
-			            {parts.map((part, index) => (
-			              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-			                {part.text}
-			              </span>
-			            ))}
-			          </div>
-			        );
-			      }}
-			    />
-			    <div className={classes.bottomText}>
-			    	<p className={classes.classHour}> {classHour} class hours </p>
-			    	<p className={classes.shamelessplug}>© 2020 no8am² • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>
-		    	</div>
-		    </div>
-		    <div/>
-	    	<Schedule
-	    	  className={classes.schedule}
-		      intervals={intervals}
+		    <Autocomplete
+		      size={width < 600 ? "small" : "medium"}
+		      autoHighlight
+				  multiple
+				  filterSelectedOptions
+				  onChange={(e, reqs) => setRequirements(reqs) }
+				  id="add-requirement-autocomplete"
+		      options={requirementList}
+		      style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+		      renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
+		      renderOption={(option, { inputValue }) => {
+		        // Highlight parts of text that matches input
+		        const matches = match(option, inputValue);
+		        const parts = parse(option, matches);
+		        return (
+		          <div>
+		            {parts.map((part, index) => (
+		              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+		                {part.text}
+		              </span>
+		            ))}
+		          </div>
+		        );
+		      }}
+		    />
+		    <Autocomplete
+		      size={width < 600 ? "small" : "medium"}
+		      autoHighlight
+				  filterSelectedOptions
+				  onChange={(e, instructor) => setInstructor(instructor) }
+				  id="add-instructor-autocomplete"
+		      options={instructorList}
+		      style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+		      renderInput={params => <TextField {...params} label="Insturctor" variant="outlined" />}
+		      renderOption={(option, { inputValue }) => {
+		      	// Highlight parts of text that matches input
+		        const matches = match(option, inputValue);
+		        const parts = parse(option, matches);
+		        return (
+		          <div>
+		            {parts.map((part, index) => (
+		              <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+		                {part.text}
+		              </span>
+		            ))}
+		          </div>
+		        );
+		      }}
+		    />
+		    <div className={classes.bottomText}>
+		    	<p className={classes.classHour}> {classHour} class hours </p>
+		    	<p className={classes.shamelessplug}>© 2020 no8am² • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>
+	    	</div>
+	    </div>
+		  <div/>
+	    <Schedule
+	    	className={classes.schedule}
+		    intervals={intervals}
 			  tempIntervals={tempIntervals}
 			  margin={margin} 
 			  width={scheduleWidth} 
 			  height={height}/>
 		  <Modal
-        	aria-labelledby="transition-modal-title"
-        	aria-describedby="transition-modal-description"
-        	className={classes.modal}
-        	open={open}
-	        onClose={handleClose}
-	        closeAfterTransition
-	        BackdropComponent={Backdrop}
-	        BackdropProps={{
-	          timeout: 500,
-	        }}
-	        >
-	        <Fade in={open}>
-	          <Paper style={{width: modalWidth}}>
-		          <h2 className={classes.modalTitle}>{course.title}</h2>
-		          {CCCs && <p className={classes.modalCCC}>
-		          					<span style={{fontWeight: "bold"}}>{"CCC: "}</span>{CCCs}
-		          				 </p>}
-		          <TableContainer className={classes.container} style={{width: modalWidth}}>
-				        <Table stickyHeader aria-label="sticky table">
-				          <TableHead>
-				            <TableRow>
-				              {columns.map(column => (
-				                <TableCell
-				                  key={column.id}
-				                  align={column.align}
-				                  style={{ minWidth: column.minWidth }}
-				                >
-				                  {column.label}
-				                </TableCell>
-				              ))}
-				            </TableRow>
-				          </TableHead>
-				          <TableBody>
-				            {rows.map(row => {
-				              return (
-				                <TableRow style={{cursor: "pointer"}} 
-				                	onMouseOver={()=>handleMouseOver(row)}
-				                	onMouseLeave={()=>handleMouseLeave()}
-				                	onClick={()=>handleSectionChange(row)} 
-				                	hover
-				                	tabIndex={-1} 
-				                	key={row.key}>
-				                  {columns.map(column => {
-				                    const value = row[column.id];
-				                    return (
-				                      <TableCell key={column.id} align={column.align}>
-				                        {column.format ? column.format(value) : value}
-				                      </TableCell>
-				                    );
-				                  })}
-				                </TableRow>
-				              );
-				            })}
-				          </TableBody>
-				        </Table>
-			      	</TableContainer>
-		      	</Paper>
-	        </Fade>
-	      </Modal>
+      	aria-labelledby="transition-modal-title"
+      	aria-describedby="transition-modal-description"
+      	className={classes.modal}
+      	open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        >
+        <Fade in={open}>
+          <Paper style={{width: modalWidth}}>
+	          <h2 className={classes.modalTitle}>{course.title}</h2>
+	          {CCCs && <p className={classes.modalCCC}>
+	          					<span style={{fontWeight: "bold"}}>{"CCC: "}</span>{CCCs}
+	          				 </p>}
+	          <TableContainer className={classes.container} style={{width: modalWidth}}>
+			        <Table stickyHeader aria-label="sticky table">
+			          <TableHead>
+			            <TableRow>
+			              {columns.map(column => (
+			                <TableCell
+			                  key={column.id}
+			                  align={column.align}
+			                  style={{ minWidth: column.minWidth }}
+			                >
+			                  {column.label}
+			                </TableCell>
+			              ))}
+			            </TableRow>
+			          </TableHead>
+			          <TableBody>
+			            {rows.map(row => {
+			              return (
+			                <TableRow style={{cursor: "pointer"}} 
+			                	onMouseOver={()=>handleMouseOver(row)}
+			                	onMouseLeave={()=>handleMouseLeave()}
+			                	onClick={()=>handleSectionChange(row)} 
+			                	hover
+			                	tabIndex={-1} 
+			                	key={row.key}>
+			                  {columns.map(column => {
+			                    const value = row[column.id];
+			                    return (
+			                      <TableCell key={column.id} align={column.align}>
+			                        {column.format ? column.format(value) : value}
+			                      </TableCell>
+			                    );
+			                  })}
+			                </TableRow>
+			              );
+			            })}
+			          </TableBody>
+			        </Table>
+		      	</TableContainer>
+	      	</Paper>
+        </Fade>
+	    </Modal>
 		</div>
 	)
 }
