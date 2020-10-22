@@ -184,6 +184,7 @@ export default function App(props) {
 
   // Save schedule onClick
   const [isSaving, setIsSaving] = React.useState(false);
+  const [hasSaved, setHasSaved] = React.useState(false);
   const saveSchedule = React.useCallback(async () => {
     if (isSaving) {
       return
@@ -192,7 +193,8 @@ export default function App(props) {
     const result = await collection.add({ courses });
     setUID(result.id);
     setIsSaving(false);
-  }, [isSaving, courses])
+    setHasSaved(true);
+  }, [isSaving, courses, collection])
 
   // Load schedule
   const scheduleData = useFirestoreDocData(collection.doc(uid), {
@@ -369,7 +371,7 @@ export default function App(props) {
           }}
         />
         <Button style={{ padding: 10, margin: 15 }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
-        <div style={{ marginLeft: 15 }}>{ window.location.origin+'/'+uid }</div>
+        <div style={{ marginLeft: 15 }}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
           <p className={classes.classHour}> {classHour} class hours </p>
           <p className={classes.shamelessplug}>© 2020 no8am² • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>

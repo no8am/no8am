@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
 import ReactGA from 'react-ga';
 import { FirebaseAppProvider, SuspenseWithPerf } from 'reactfire';
+import { CircularProgress } from '@material-ui/core';
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,7 +24,7 @@ const firebaseConfig = {
 function FirebaseApp() {
   return (
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <SuspenseWithPerf fallback={<p>loading app...</p>} traceId={'load-app-status'}>
+      <SuspenseWithPerf fallback={<CircularProgress color="inherit" size={20} />} traceId={'load-app-status'}>
         <App />
       </SuspenseWithPerf>
     </FirebaseAppProvider>
