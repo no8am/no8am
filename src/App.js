@@ -9,7 +9,7 @@ import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
 import { parseMeetingTimes, useWindowSize, createRow, columns } from './utils';
 // import { ListboxComponent } from './virtualization';
-import { seats, instructorList, requirementList } from './data';
+import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
 
@@ -117,6 +117,7 @@ export default function App(props) {
   // Filters
   const [instructor, setInstructor] = React.useState(null); // currently selected instructor
   const [requirements, setRequirements] = React.useState([]);  // currently selected requirements
+  const [deliveryFormat, setDeliveryFormat] = React.useState(null); // Online or classroom instruction
   const [filteredCourseList, setFilteredCourseList] = React.useState([]);
   
   // Modal/ Table
@@ -241,17 +242,21 @@ export default function App(props) {
       const CCR_codes = requirements.map(r => r.split('-')[0]);
       const CCR_filter = CCR_codes.map(c => `sections.Reqs.Code:"${c}"`).join(' AND ')
       const instructor_filter = instructor ? `sections.Instructors.Display:"${instructor}"` : '';
-      // Horrid ternary conditonal but oh well
-      const filters = (CCR_filter && instructor_filter) ? 
-                      [CCR_filter, instructor_filter].join(' AND ') :
-                      CCR_filter ? CCR_filter : instructor_filter;
+      const delivery_filter = deliveryFormat ? `sections.DeliveryMethods:"${deliveryMethodMap[deliveryFormat]}"` : '';
+      
+      let filters = [];
+      if (CCR_filter) filters.push(CCR_filter);
+      if (instructor_filter) filters.push(instructor_filter);
+      if (delivery_filter) filters.push(delivery_filter);
+      filters = filters.join(' AND ')
+      
       algoliaIndex
         .search(query, { filters })
         .then(({ hits }) => {
           setFilteredCourseList(hits)
         })
     })();
-  }, [query, requirements, instructor]);
+  }, [query, requirements, instructor, deliveryFormat]);
 
   const SearchBox = () => (
     <Autocomplete
@@ -355,6 +360,30 @@ export default function App(props) {
           options={instructorList}
           style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
           renderInput={params => <TextField {...params} label="Insturctor" variant="outlined" />}
+          renderOption={(option, { inputValue }) => {
+            // Highlight parts of text that matches input
+            const matches = match(option, inputValue);
+            const parts = parse(option, matches);
+            return (
+              <div>
+                {parts.map((part, index) => (
+                  <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                    {part.text}
+                  </span>
+                ))}
+              </div>
+            );
+          }}
+        />
+        <Autocomplete
+          size={width < 600 ? "small" : "medium"}
+          autoHighlight
+          filterSelectedOptions
+          onChange={(e, deliveryFormat) => setDeliveryFormat(deliveryFormat) }
+          id="add-deliveryFormat-autocomplete"
+          options={deliveryMethodList}
+          style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+          renderInput={params => <TextField {...params} label="Delivery Method" variant="outlined" />}
           renderOption={(option, { inputValue }) => {
             // Highlight parts of text that matches input
             const matches = match(option, inputValue);
