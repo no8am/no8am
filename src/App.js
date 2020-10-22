@@ -430,7 +430,7 @@ export default function App(props) {
 						{/* •{' '}{Math.round(classHour * 5) / 5} class hours  */}
 					</p> { /* rounds to nearest half hour, hopefully */}
 			    	<p className={classes.shamelessplug}>
-						<a href="https://github.com/ndemarchis/no8am-3" target="_blank" rel="noopener noreferrer"> © 2020 no8am.v3α </a> • 
+						<a href="https://github.com/ndemarchis/no8am-3" target="_blank" rel="noopener noreferrer"> © 2020 no8am.v3α </a> • Jimmy Wei '21 • 
 						<a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
 						<br /><i>"it's better than nothing"</i>
 						<br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
