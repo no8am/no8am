@@ -1,5 +1,10 @@
 import{ schemeTableau10 } from 'd3-scale-chromatic';
 
+
+export const ALGOLIA_APP_ID = 'VRS9N3FZBF';
+export const ALGOLIA_SEARCH_ONLY_API = '7ce0ddcf5bf9871a99bef2f6aaa3d44a';
+export const ALGOLIA_INDEX_NAME = '2021_spring_courses';
+
 export const colors = schemeTableau10;
 export const colors2 = [
   '#2364AA',

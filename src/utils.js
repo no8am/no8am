@@ -225,9 +225,11 @@ export const parseMeetingTimes = (section, intervals) => {
     if (meeting.F === "Y") weekDays += "F";
     for (weekDay of weekDays) {
       intervals.push({ weekDay, start, end, courseTitle, color, startText, endText });
+      const lectureTime = (end.hour - start.hour) * 60 + (end.minute - start.minute);
+      totalLectureTime += lectureTime;
     }
-    const lectureTime = (end.hour - start.hour) * 60 + (end.minute - start.minute);
-    totalLectureTime += lectureTime;
+    // const lectureTime = (end.hour - start.hour) * 60 + (end.minute - start.minute);
+    // totalLectureTime += lectureTime;
   }
   return totalLectureTime;
 }
