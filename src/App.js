@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
@@ -12,7 +12,6 @@ import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns, CRN
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
                                        
-// import { ListboxComponent } from './virtualization';
 import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
@@ -129,6 +128,7 @@ export default function App(props) {
   
   // Modal/ Table
   const [open, setOpen] = React.useState(false);
+  const [openi, setOpeni] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
@@ -239,24 +239,23 @@ export default function App(props) {
   React.useEffect(() => {
   	let intervals = [];
   	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
-	// const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
-	const classHour = (lectureTimes.reduce((a, b) => a + b, 0)) / 60 
-	const credits = courses.map(course => parseCredits(courses)) // something
-	const CRNs = sections.map(section => 
-		<TableRow width="max">
-			<TableCell width="1500px">
-				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
-			</TableCell>
-			<TableCell align="right">
-				{section.Crn}
-			</TableCell>
-		</TableRow>
-	);
-	setClassHour(classHour);
-	setCredits(credits);
-	setIntervals(intervals);
-	setCRNs(CRNs);
-  }, [sections])
+  	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
+  	const credits = courses.map(course => parseCredits(courses)) // something
+  	const CRNs = sections.map(section => 
+  		<TableRow width="max">
+  			<TableCell width="1500px">
+  				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
+  			</TableCell>
+  			<TableCell align="right">
+  				{section.Crn}
+  			</TableCell>
+  		</TableRow>
+  	);
+  	setClassHour(classHour);
+  	setCredits(credits);
+  	setIntervals(intervals);
+  	setCRNs(CRNs);
+  }, [sections, courses])
 	  
   React.useEffect(() => {
     (async () => {
@@ -421,14 +420,12 @@ export default function App(props) {
           }}
         />
         <Button style={{ padding: 10, margin: 15 }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
-        <div style={{ marginLeft: 15 }}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
+        <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
-          <p className={classes.credits}> {credits[0] == null ? 0 : credits[0]} credits </p>
-          <p className={classes.classHour}> {classHour} class hours </p>          
+          <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
           <p className={classes.shamelessplug}>
             <a href="https://github.com/icewing1996/no8am-2" target="_blank" rel="noopener noreferrer"> © 2020 no8am.v3α </a> • Jimmy Wei '21 • 
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
-            <br /><i>"it's better than nothing"</i>
             <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
             <a href="https://github.com/ndemarchis/no8am-3#current-bugs" target="_blank" rel="noopener noreferrer"> Current bugs</a> 
             <br />Database last updated 10/24/2020.</p>

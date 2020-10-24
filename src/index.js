@@ -7,6 +7,8 @@ import 'typeface-roboto';
 import ReactGA from 'react-ga';
 import { FirebaseAppProvider, SuspenseWithPerf } from 'reactfire';
 import { CircularProgress } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -32,8 +34,6 @@ function FirebaseApp() {
 }
 
 
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
 
 const theme = createMuiTheme({
     typography: {
