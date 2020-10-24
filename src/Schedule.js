@@ -33,7 +33,7 @@ const HoverText = props => {
         fontSize={fontSize}
         textAnchor="middle"
         verticalAnchor="start"
-        style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Roboto"}}
+        style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Prompt"}}
       >
       {text ? text : defaultText}
       </Text>
@@ -116,7 +116,7 @@ export default class Schedule extends React.Component {
                 fill: 'black',
                 textAnchor: 'end',
                 fontSize: 10,
-                fontFamily: 'Roboto',
+                fontFamily: 'Prompt',
                 dx: '-0.25em',
                 dy: '0.5em'
               })}
@@ -137,7 +137,7 @@ export default class Schedule extends React.Component {
                 fill: 'black',
                 textAnchor: 'middle',
                 fontSize: 15,
-                fontFamily: 'Roboto',
+                fontFamily: 'Prompt',
                 fontWeight: 'bold',
                 dx: '0em',
                 dy: '0.25em'

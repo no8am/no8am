@@ -7,12 +7,12 @@ export const ALGOLIA_INDEX_NAME = '2021_spring_courses';
 
 export const colors = schemeTableau10;
 export const colors2 = [
-  '#FF9AA2',
-  '#FFB7B2',
-  '#FFDAC1',
-  '#E2F0CB',
-  '#B5EAD7',
-  '#C7CEEA',
+  '#2364AA',
+  '#3DA5D9',
+  '#65B8B0',
+  '#EA7317',
+  '#D81E5B',
+  // '#341C1C',
 ]
 
 // Classes go from 8am to 9:52pm at Bucknell

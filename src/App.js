@@ -2,12 +2,16 @@ import React from 'react';
 import './App.css';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, CircularProgress, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
-import { parseMeetingTimes, useWindowSize, createRow, columns } from './utils';
+import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns, CRNcolumns } from './utils';
+
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+                                       
 // import { ListboxComponent } from './virtualization';
 import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
 import algoliasearch from 'algoliasearch/lite';
@@ -19,6 +23,7 @@ const searchClient = algoliasearch(
   ALGOLIA_SEARCH_ONLY_API
 );
 const algoliaIndex = searchClient.initIndex(ALGOLIA_INDEX_NAME);
+
 
 const useStyles = makeStyles(theme => ({
   listbox: {
@@ -78,13 +83,13 @@ const useStyles = makeStyles(theme => ({
     maxHeight: 440,
   },
   modalTitle: {
-    marginLeft: 30,
-    marginTop: 30,
-    fontFamily: "Roboto"
+  	marginLeft: 30,
+  	marginTop: 30,
+  	fontFamily: "Prompt"
   },
   modalCCC: {
-    marginLeft: 45,
-    fontFamily: "Roboto"
+  	marginLeft: 45,
+  	fontFamily: "Prompt"
   },
 }));
 
@@ -113,6 +118,8 @@ export default function App(props) {
   const [classHour, setClassHour] = React.useState(0); // total class hours
   const [intervals, setIntervals] = React.useState([]); // a list of [start, end] periods for shcedule display
   const [tempIntervals, setTempIntervals] = React.useState([]); // same as above, but for previewing when use hovers over section
+	const [credits, setCredits] = React.useState(0); // total credits
+	const [CRNs, setCRNs] = React.useState([]); // currently selected CRNs
   
   // Filters
   const [instructor, setInstructor] = React.useState(null); // currently selected instructor
@@ -124,7 +131,7 @@ export default function App(props) {
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
-  
+
   const handleOpen = course => {
     setCourse(course);
     setOpen(true);
@@ -230,13 +237,27 @@ export default function App(props) {
   }, [courses])
 
   React.useEffect(() => {
-    let intervals = [];
-    const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
-    const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;
-    setClassHour(classHour);
-    setIntervals(intervals);
+  	let intervals = [];
+  	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
+	// const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
+	const classHour = (lectureTimes.reduce((a, b) => a + b, 0)) / 60 
+	const credits = courses.map(course => parseCredits(courses)) // something
+	const CRNs = sections.map(section => 
+		<TableRow width="max">
+			<TableCell width="1500px">
+				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
+			</TableCell>
+			<TableCell align="right">
+				{section.Crn}
+			</TableCell>
+		</TableRow>
+	);
+	setClassHour(classHour);
+	setCredits(credits);
+	setIntervals(intervals);
+	setCRNs(CRNs);
   }, [sections])
-  
+	  
   React.useEffect(() => {
     (async () => {
       const CCR_codes = requirements.map(r => r.split('-')[0]);
@@ -322,7 +343,7 @@ export default function App(props) {
     />
   )
 
-  return (
+	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
         { SearchBox() }
@@ -402,9 +423,49 @@ export default function App(props) {
         <Button style={{ padding: 10, margin: 15 }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
         <div style={{ marginLeft: 15 }}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
-          <p className={classes.classHour}> {classHour} class hours </p>
-          <p className={classes.shamelessplug}>© 2020 no8am² • <a href="https://github.com/icewing1996/no8am-2"> Github </a> • Jimmy Wei '20</p>
+          <p className={classes.credits}> {credits[0] == null ? 0 : credits[0]} credits </p>
+          <p className={classes.classHour}> {classHour} class hours </p>          
+          <p className={classes.shamelessplug}>
+            <a href="https://github.com/icewing1996/no8am-2" target="_blank" rel="noopener noreferrer"> © 2020 no8am.v3α </a> • Jimmy Wei '21 • 
+            <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
+            <br /><i>"it's better than nothing"</i>
+            <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
+            <a href="https://github.com/ndemarchis/no8am-3#current-bugs" target="_blank" rel="noopener noreferrer"> Current bugs</a> 
+            <br />Database last updated 10/24/2020.</p>
         </div>
+        <div className={classes.CRNs} style={{zIndex: 99}}>
+          <TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
+                  <Table stickyHeader size="small" aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        {CRNcolumns.map(column => (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{ minWidth: column.minWidth }}
+                          >
+                            {column.label}
+                          </TableCell>
+                        ))}
+                  <TableCell
+                    style={{width: '5%'}}
+                  >
+                  <IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
+                    {openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  </IconButton>
+                  </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                  <Collapse in={openi} open={openi} timeout="auto" unmountOnExit>
+                  <Box margin={1}>
+                    {CRNs}
+                  </Box>
+                </Collapse>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+          </div>
       </div>
       <div/>
       <Schedule
