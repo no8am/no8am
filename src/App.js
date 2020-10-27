@@ -379,7 +379,7 @@ export default function App(props) {
           id="add-instructor-autocomplete"
           options={instructorList}
           style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-          renderInput={params => <TextField {...params} label="Insturctor" variant="outlined" />}
+          renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
           renderOption={(option, { inputValue }) => {
             // Highlight parts of text that matches input
             const matches = match(option, inputValue);
