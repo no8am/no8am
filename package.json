@@ -17,7 +17,7 @@
     "algoliasearch": "^4.5.1",
     "autosuggest-highlight": "^3.1.1",
     "browserlist": "^1.0.1",
-    "caniuse-lite": "^1.0.30001148",
+    "caniuse-lite": "^1.0.30001151",
     "d3-scale-chromatic": "^1.5.0",
     "firebase": "^7.24.0",
     "framer-motion": "^1.11.1",
