@@ -16,7 +16,7 @@ import { seats, instructorList, requirementList, deliveryMethodList, deliveryMet
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
 
-import AlertDialog from './alertdialog'
+// import AlertDialog from './alertdialog'
 
 
 const searchClient = algoliasearch(
@@ -220,13 +220,13 @@ export default function App(props) {
   }, [scheduleData])
 
   // TEMPORARY REDIRECT
-  React.useEffect(() => {
-    if (window.confirm(
-      "Hey there! We realize that this is broken, and we're working on it. \n\nClicking something will take you to Coursicle for Bucknell. Trust me, we're as devastated as you are that it's broken. Happy scheduling! \n\n--Nick 😎, November 2 "
-      )) {
-      window.location.href = "http://coursicle.com/bucknell";
-    } else {}
-  })
+//   React.useEffect(() => {
+//     if (window.confirm(
+//       "Hey there! We realize that this is broken, and we're working on it. \n\nClicking something will take you to Coursicle for Bucknell. Trust me, we're as devastated as you are that it's broken. Happy scheduling! \n\n--Nick 😎, November 2 "
+//       )) {
+//       window.location.href = "http://coursicle.com/bucknell";
+//     } else {}
+//   })
     
   // Clear out schedule preview when modal is closed
   React.useEffect(() => {
