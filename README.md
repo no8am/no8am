@@ -10,6 +10,7 @@ Please contact us if the database needs to be updated, one must pull manually fr
 
 ## Current Bugs
 
+* Some courses have duplicates in the list, even though all the data is accurate.
 * Courses scheduled at the same time overlap, instead of appearing side-by-side.
 * The CRN table doesn't look right.
 
