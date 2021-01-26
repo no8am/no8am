@@ -382,98 +382,98 @@ export default function App(props) {
             );
           }}
         />
-        <Autocomplete
-          size={width < 600 ? "small" : "medium"}
-          autoHighlight
-          filterSelectedOptions
-          onChange={(e, instructor) => setInstructor(instructor) }
-          id="add-instructor-autocomplete"
-          options={instructorList}
-          style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-          renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
-          renderOption={(option, { inputValue }) => {
-            // Highlight parts of text that matches input
-            const matches = match(option, inputValue);
-            const parts = parse(option, matches);
-            return (
-              <div>
-                {parts.map((part, index) => (
-                  <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            );
-          }}
-        />
-        <Autocomplete
-          size={width < 600 ? "small" : "medium"}
-          autoHighlight
-          filterSelectedOptions
-          onChange={(e, deliveryFormat) => setDeliveryFormat(deliveryFormat) }
-          id="add-deliveryFormat-autocomplete"
-          options={deliveryMethodList}
-          style={{ width: courseSelectorWidth * 0.5, marginLeft: 15, marginRight: 15, marginBottom: 15 }}
-          renderInput={params => <TextField {...params} label="Delivery Method" variant="outlined" />}
-          renderOption={(option, { inputValue }) => {
-            // Highlight parts of text that matches input
-            const matches = match(option, inputValue);
-            const parts = parse(option, matches);
-            return (
-              <div>
-                {parts.map((part, index) => (
-                  <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            );
-          }}
-        />
+        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row"}}>
+          <Autocomplete
+            size={width < 600 ? "small" : "medium"}
+            autoHighlight
+            filterSelectedOptions
+            onChange={(e, instructor) => setInstructor(instructor) }
+            id="add-instructor-autocomplete"
+            options={instructorList}
+            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "left"}}
+            renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
+            renderOption={(option, { inputValue }) => {
+              // Highlight parts of text that matches input
+              const matches = match(option, inputValue);
+              const parts = parse(option, matches);
+              return (
+                <div>
+                  {parts.map((part, index) => (
+                    <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              );
+            }}
+          />
+          <Autocomplete
+            size={width < 600 ? "small" : "medium"}
+            autoHighlight
+            filterSelectedOptions
+            onChange={(e, deliveryFormat) => setDeliveryFormat(deliveryFormat) }
+            id="add-deliveryFormat-autocomplete"
+            options={deliveryMethodList}
+            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "right" }}
+            renderInput={params => <TextField {...params} label="Delivery Method" variant="outlined" />}
+            renderOption={(option, { inputValue }) => {
+              // Highlight parts of text that matches input
+              const matches = match(option, inputValue);
+              const parts = parse(option, matches);
+              return (
+                <div>
+                  {parts.map((part, index) => (
+                    <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              );
+            }}
+          />
+        </div>
         <Button style={{ padding: 10, margin: 15 }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
         <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
           <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
           <p className={classes.shamelessplug}>
-            <a href="https://github.com/icewing1996/no8am-2" target="_blank" rel="noopener noreferrer"> © 2020 no8am.v3α </a> • Jimmy Wei '21 • 
+            <a href="https://github.com/icewing1996/no8am-2" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α </a> • Jimmy Wei '21 • 
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
             <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
             <a href="https://github.com/ndemarchis/no8am-3#current-bugs" target="_blank" rel="noopener noreferrer"> Current bugs</a> 
-            <br />Database last updated 11/01/2020.</p>
+            <br />Database last updated 01/26/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99}}>
           <TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
-                  <Table stickyHeader size="small" aria-label="sticky table">
-                    <TableHead>
-                      <TableRow>
-                        {CRNcolumns.map(column => (
-                          <TableCell
-                            key={column.id}
-                            align={column.align}
-                            style={{ minWidth: column.minWidth }}
-                          >
-                            {column.label}
-                          </TableCell>
-                        ))}
-                  <TableCell
-                    style={{width: '5%'}}
-                  >
-                  <IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
-                    {openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
+            <Table stickyHeader size="small" aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {CRNcolumns.map(column => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                  <TableCell style={{width: '5%'}} >
+                    <IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
+                      {openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
                   </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                  <Collapse in={openi} open={openi} timeout="auto" unmountOnExit>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <Collapse in={openi} open={openi} timeout="auto" unmountOnExit>
                   <Box margin={1}>
                     {CRNs}
                   </Box>
                 </Collapse>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-          </div>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
       <div/>
       <Schedule
