@@ -6,19 +6,20 @@
 </p>
 
 ## Notes
-Basically, the deal is here that the database has to be manually pulled from the CourseInformation site [here](https://pubapps.bucknell.edu/CourseInformation/data/course/term/202105). The call works fine whenever it's run locally in development (see below), but deployed it fails. So, please contact me if the database needs to be updated.
+Please contact us if the database needs to be updated, one must pull manually from the current CourseInformation site.
 
 ## Current Bugs
 
+* Some courses have duplicates in the list, even though all the data is accurate.
 * Courses scheduled at the same time overlap, instead of appearing side-by-side.
-* The CRN table doesn't look right (this one *really* bothers me).
-* The "class hours" count is horribly wrong (this one bothers me too).
+* The CRN table doesn't look right.
 
 ## To-do list
 
 * Add descriptions to section selection windows, that way people know what class they're signing up for
 * Add RateMyProfessor links to each professor's name systematically?
 * Reframe schedule for extra early / late classes (we *love* everything that our 30-minute in-between class period does, right?)
+* Add 12-hour time
 
 ## Develop
 ```bash
