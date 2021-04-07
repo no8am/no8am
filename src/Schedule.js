@@ -24,6 +24,7 @@ const HoverText = props => {
         height={barHeight}
         fill={color}
         opacity={opacity}
+        rx={5}
       />
       <Text
         x={barX+barWidth/2}
@@ -101,7 +102,7 @@ export default class Schedule extends React.Component {
     return (
       <div className="schedule" style={{ width, height }}>
         <svg width={width} height={height}>
-          <rect x={0} y={0} width={width} height={height} fill={bg} rx={14}/>
+          <rect x={0} y={0} width={width} height={height} fill={bg} ry={10} />
           <Group left={margin.left}>
             <AxisLeft
               hideTicks

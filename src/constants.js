@@ -17,7 +17,7 @@ export const colors2 = [
 
 // Classes go from 8am to 9:52pm at Bucknell
 export const first_class = { hour: 8, minute: 0}
-export const last_class = { hour: 22, minute: 0}
+export const last_class = { hour: 22, minute: 30}
 
 export const weekDayMap = {
 	'M': 'Monday',
