@@ -130,7 +130,7 @@ export default function App(props) {
   
   // Modal/ Table
   const [open, setOpen] = React.useState(false);
-  const [openi, setOpeni] = React.useState(false);
+  const [openi, setOpeni] = React.useState(true);
   const [rows, setRows] = React.useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
@@ -253,10 +253,14 @@ export default function App(props) {
   	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
   	const credits = courses.map(course => parseCredits(courses)) // something
   	const CRNs = sections.map(section => 
-  		<TableRow width="max">
+  		<TableRow width="max" height="min">
   			<TableCell width="1500px">
-  				{section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title}
+          {/* {section.DeptCodes[0] + section.Number + "-" + section.Section + " — " + section.Title} */}
+  				{section.DeptCodes[0] + section.Number + " " + section.Title}
   			</TableCell>
+        <TableCell>
+          {section.Section}
+        </TableCell>
   			<TableCell align="right">
   				{section.Crn}
   			</TableCell>
@@ -291,7 +295,7 @@ export default function App(props) {
 
   const SearchBox = () => (
     <Autocomplete
-      size={width < 600 ? "small" : "medium"}
+      size="small"
       style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
       //ListboxComponent={ListboxComponent}
       // loading={loading}
@@ -342,8 +346,10 @@ export default function App(props) {
               onClick={()=>handleOpen(option)}
               style={{backgroundColor:option.color}}
               label={(
-                <section style={{fontFamily: "Roboto"}}>
-                  <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.title}</span>
+                <section 
+                  // style={{fontFamily: "Roboto"}}
+                >
+                  <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.sections[0].DeptCodes[0] + " " + option.sections[0].Number}</span>
                   <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
                 </section>
               )}
@@ -357,15 +363,17 @@ export default function App(props) {
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
         { SearchBox() }
+        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row"}}>
         <Autocomplete
-          size={width < 600 ? "small" : "medium"}
+          size="small"
           autoHighlight
+          disableListWrap
           multiple
           filterSelectedOptions
           onChange={(e, reqs) => setRequirements(reqs) }
           id="add-requirement-autocomplete"
           options={requirementList}
-          style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+          style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "left"}}
           renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
           renderOption={(option, { inputValue }) => {
             // Highlight parts of text that matches input
@@ -382,15 +390,14 @@ export default function App(props) {
             );
           }}
         />
-        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row"}}>
           <Autocomplete
-            size={width < 600 ? "small" : "medium"}
+            size="small"
             autoHighlight
             filterSelectedOptions
             onChange={(e, instructor) => setInstructor(instructor) }
             id="add-instructor-autocomplete"
             options={instructorList}
-            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "left"}}
+            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "right"}}
             renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
             renderOption={(option, { inputValue }) => {
               // Highlight parts of text that matches input
@@ -407,72 +414,41 @@ export default function App(props) {
               );
             }}
           />
-          <Autocomplete
-            size={width < 600 ? "small" : "medium"}
-            autoHighlight
-            filterSelectedOptions
-            onChange={(e, deliveryFormat) => setDeliveryFormat(deliveryFormat) }
-            id="add-deliveryFormat-autocomplete"
-            options={deliveryMethodList}
-            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "right" }}
-            renderInput={params => <TextField {...params} label="Delivery Method" variant="outlined" />}
-            renderOption={(option, { inputValue }) => {
-              // Highlight parts of text that matches input
-              const matches = match(option, inputValue);
-              const parts = parse(option, matches);
-              return (
-                <div>
-                  {parts.map((part, index) => (
-                    <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                      {part.text}
-                    </span>
-                  ))}
-                </div>
-              );
-            }}
-          />
         </div>
-        <Button style={{ padding: 10, margin: 15 }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
         <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
+          <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}><p>{ hasSaved ? window.location.origin+'/'+uid : ''}</p></div>
           <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
           <p className={classes.shamelessplug}>
             <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α </a> • Jimmy Wei '21 • 
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
             <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
             <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> Github &amp; bugs</a> 
-            <br />Database last updated 04/07/2021.</p>
+            <br />Database last updated 04/11/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99}}>
           <TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
-            <Table stickyHeader size="small" aria-label="sticky table">
+            <Table stickyHeader size="small" aria-label="sticky table" height="250px">
               <TableHead>
-                <TableRow>
-                  {CRNcolumns.map(column => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
+                <TableRow hover >
+                    <TableCell>
+                      Course Title
                     </TableCell>
-                  ))}
-                  <TableCell style={{width: '5%'}} >
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpeni(!openi)}>
-                      {openi ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                  </TableCell>
+                    <TableCell>
+                      Course Section
+                    </TableCell>
+                    <TableCell>
+                      CRN
+                    </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <Collapse in={openi} open={openi} timeout="auto" unmountOnExit>
-                  <Box margin={1}>
-                    {CRNs}
-                  </Box>
-                </Collapse>
+                {CRNs}
               </TableBody>
             </Table>
           </TableContainer>
+          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
+
         </div>
       </div>
       <div/>
@@ -498,6 +474,11 @@ export default function App(props) {
         <Fade in={open}>
           <Paper style={{width: modalWidth}}>
             <h2 className={classes.modalTitle}>{course.title}</h2>
+            {course.sections && course.sections[0].Footnote && 
+              <p className={classes.modalCCC}>
+                <span style={{fontWeight: "bold"}}>Footnote: </span>{course.sections[0].Footnote}
+                </p>
+            }
             {CCCs && <p className={classes.modalCCC}>
                       <span style={{fontWeight: "bold"}}>{"CCC: "}</span>{CCCs}
                      </p>}
