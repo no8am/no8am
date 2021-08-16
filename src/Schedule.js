@@ -100,7 +100,7 @@ export default class Schedule extends React.Component {
     const textOffset = width < 540 ? 5 : 8;
 
     return (
-      <div className="schedule" style={{ width, height }}>
+      <div className="schedule" style={{ width, height, flex: '1' }}>
         <svg width={width} height={height}>
           <rect x={0} y={0} width={width} height={height} fill={bg} ry={10} />
           <Group left={margin.left}>

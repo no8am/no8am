@@ -8,12 +8,11 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
 import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns, CRNcolumns } from './utils';
+import { useStyles } from './comps/styles';
 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-                                       
 import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
 import CRNsModal from './comps/CRNsModal';
+import SectionModal from './comps/SectionModal';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
 import { set } from 'lodash';
@@ -25,75 +24,6 @@ const searchClient = algoliasearch(
 );
 const algoliaIndex = searchClient.initIndex(ALGOLIA_INDEX_NAME);
 
-
-const useStyles = makeStyles(theme => ({
-  listbox: {
-    '& ul': {
-      padding: 0,
-      margin: 0,
-    },
-  },
-  bottomText: {
-    position: "absolute",
-    bottom: 0,
-    color: "white",
-    [theme.breakpoints.down('xs')]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up('sm')]: {
-        width: "40%",   
-      },
-  },
-  shamelessplug: {
-    textAlign: "center",
-  },
-  classHour: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  app: {
-    display: "flex",
-    [theme.breakpoints.down('xs')]: {
-        flexDirection: "column",
-      },
-      [theme.breakpoints.up('sm')]: {
-        flexDirection: "row", 
-      },
-    background: "linear-gradient(0deg, rgba(113,140,187,1) 0%, rgba(240,137,6,0.3124613569985971) 100%);",
-  },
-  schedule: {
-    flex: 1,
-  },
-  courseSelector: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'start',
-    justifyContent: 'start',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  container: {
-    maxHeight: 440,
-  },
-  modalTitle: {
-  	marginLeft: 30,
-  	marginTop: 30,
-  	fontFamily: "Prompt"
-  },
-  modalCCC: {
-  	marginLeft: 45,
-  	fontFamily: "Prompt"
-  },
-}));
-
 // Margin of schedule
 const margin = {
   'left': 50,
@@ -103,8 +33,7 @@ const margin = {
 }
 
 export default function App(props) {
-  const size = useWindowSize();
-  const { width, height } = size;
+  const { width, height } = useWindowSize();
   const courseSelectorWidth = width < 600 ? width : width * 0.4;
   const modalWidth = width < 600 ? width : width * 0.5;
   const scheduleWidth = width < 600 ? width : width * 0.6;
@@ -129,13 +58,13 @@ export default function App(props) {
   const [filteredCourseList, setFilteredCourseList] = useState([]);
   
   // Modal/ Table
-  const [open, setOpen] = useState(false);
+  const [openSectionModal, setOpenSectionModal] = useState(false);
   const [openCRNsModal, setOpenCRNsModal] = useState(false);
   const [rows, setRows] = useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
-  const handleOpen = course => { setCourse(course); setOpen(true); };
-  const handleClose = () => { setOpen(false); };
+  const handleOpenSectionModal = course => { setCourse(course); setOpenSectionModal(true); };
+  const handleCloseSectionModal = () => { setOpenSectionModal(false); };
 
   const handleSectionChange = row => {
     const  { section, title } = row;
@@ -151,24 +80,7 @@ export default function App(props) {
       return course;
     });
     setCourses(new_courses);
-    setOpen(false);
-  }
-
-  // Add current selection for schedule preview
-  const handleMouseOver = row => {
-    const { section_obj } = row;
-    let newTempIntervals = [];
-    parseMeetingTimes(section_obj, newTempIntervals);
-    newTempIntervals = newTempIntervals.map(i => {
-        return {...i, temp: true};
-      }
-    )
-    setTempIntervals(newTempIntervals);
-  }
-
-  // Clear out schedule preview
-  const handleMouseLeave = () => {
-    setTempIntervals([]);
+    setOpenSectionModal(false);
   }
 
   // Saving and loading schedule
@@ -215,9 +127,9 @@ export default function App(props) {
     
   // Clear out schedule preview when modal is closed
   useEffect(() => {
-    if (open) return undefined;
+    if (openSectionModal) return undefined;
     setTempIntervals([]);
-  }, [open])
+  }, [openSectionModal])
 
   // Populate modal table when user clicks on a course chip
   useEffect(() => {
@@ -328,7 +240,7 @@ export default function App(props) {
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip
-              onClick={()=>handleOpen(option)}
+              onClick={()=>handleOpenSectionModal(option)}
               style={{backgroundColor:option.color}}
               label={(
                 <section 
@@ -400,8 +312,8 @@ export default function App(props) {
             }}
           />
         </div>
-        <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}>{ hasSaved ? window.location.origin+'/'+uid : ''}</div>
         <div className={classes.bottomText}>
+          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
           <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}><p>{ hasSaved ? window.location.origin+'/'+uid : ''}</p></div>
           <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
           <p className={classes.shamelessplug}>
@@ -415,14 +327,17 @@ export default function App(props) {
           {CRNsModal({
             open: openCRNsModal,
             handleClose: () => setOpenCRNsModal(false),
-            rows,
-            columns,
             CRNs,
-            classes
+            classes,
+            modalWidth,
           })}
-          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={() => setOpenCRNsModal(true)}>Show CRN's</Button>
-          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
-
+          <Button 
+            style={{ padding: 10, margin: 15, width: "95%" }} 
+            variant="outlined" 
+            onClick={() => {
+              CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
+            }}
+          >Show CRN's</Button>
         </div>
       </div>
       <div/>
@@ -433,71 +348,19 @@ export default function App(props) {
         margin={margin} 
         width={scheduleWidth} 
         height={height}/>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-        >
-        <Fade in={open}>
-          <Paper style={{width: modalWidth}}>
-            <h2 className={classes.modalTitle}>{course.title}</h2>
-            {course.sections && course.sections[0].Footnote && 
-              <p className={classes.modalCCC}>
-                <span style={{fontWeight: "bold"}}>Footnote: </span>{course.sections[0].Footnote}
-                </p>
-            }
-            {CCCs && <p className={classes.modalCCC}>
-                      <span style={{fontWeight: "bold"}}>{"CCC: "}</span>{CCCs}
-                     </p>}
-            <TableContainer className={classes.container} style={{width: modalWidth}}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map(column => (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map(row => {
-                    return (
-                      <TableRow style={{cursor: "pointer"}} 
-                        onMouseOver={()=>handleMouseOver(row)}
-                        onMouseLeave={()=>handleMouseLeave()}
-                        onClick={()=>handleSectionChange(row)} 
-                        hover
-                        tabIndex={-1} 
-                        key={row.key}>
-                        {columns.map(column => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.format ? column.format(value) : value}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Fade>
-      </Modal>
+
+      { SectionModal({
+        openSectionModal,
+        classes,
+        course,
+        CCCs,
+        rows,
+        columns,
+        modalWidth,
+        setTempIntervals,
+        handleCloseSectionModal,
+        handleSectionChange,
+      }) }
     </div>
   )
 }
