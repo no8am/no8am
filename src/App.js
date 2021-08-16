@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
@@ -13,10 +13,10 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
                                        
 import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
+import CRNsModal from './comps/CRNsModal';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
-
-// import AlertDialog from './alertdialog'
+import { set } from 'lodash';
 
 
 const searchClient = algoliasearch(
@@ -112,36 +112,30 @@ export default function App(props) {
   const classes = useStyles();
   
   // Courses
-  const [query, setQuery] = React.useState(''); // Algolia search queary
-  const [course, setCourse] = React.useState({}); // for section selection of a single course
-  const [courses, setCourses] = React.useState([]); // currently selected courses on schedule
-  const [sections, setSections] = React.useState([]); // currently selected course sections
-  const [classHour, setClassHour] = React.useState(0); // total class hours
-  const [intervals, setIntervals] = React.useState([]); // a list of [start, end] periods for shcedule display
-  const [tempIntervals, setTempIntervals] = React.useState([]); // same as above, but for previewing when use hovers over section
-	const [credits, setCredits] = React.useState(0); // total credits
-	const [CRNs, setCRNs] = React.useState([]); // currently selected CRNs
+  const [query, setQuery] = useState(''); // Algolia search queary
+  const [course, setCourse] = useState({}); // for section selection of a single course
+  const [courses, setCourses] = useState([]); // currently selected courses on schedule
+  const [sections, setSections] = useState([]); // currently selected course sections
+  const [classHour, setClassHour] = useState(0); // total class hours
+  const [intervals, setIntervals] = useState([]); // a list of [start, end] periods for shcedule display
+  const [tempIntervals, setTempIntervals] = useState([]); // same as above, but for previewing when use hovers over section
+	const [credits, setCredits] = useState(0); // total credits
+	const [CRNs, setCRNs] = useState([]); // currently selected CRNs
   
   // Filters
-  const [instructor, setInstructor] = React.useState(null); // currently selected instructor
-  const [requirements, setRequirements] = React.useState([]);  // currently selected requirements
-  const [deliveryFormat, setDeliveryFormat] = React.useState(null); // Online or classroom instruction
-  const [filteredCourseList, setFilteredCourseList] = React.useState([]);
+  const [instructor, setInstructor] = useState(null); // currently selected instructor
+  const [requirements, setRequirements] = useState([]);  // currently selected requirements
+  const [deliveryFormat, setDeliveryFormat] = useState(null); // Online or classroom instruction
+  const [filteredCourseList, setFilteredCourseList] = useState([]);
   
   // Modal/ Table
-  const [open, setOpen] = React.useState(false);
-  const [openi, setOpeni] = React.useState(true);
-  const [rows, setRows] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [openCRNsModal, setOpenCRNsModal] = useState(false);
+  const [rows, setRows] = useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
-  const handleOpen = course => {
-    setCourse(course);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleOpen = course => { setCourse(course); setOpen(true); };
+  const handleClose = () => { setOpen(false); };
 
   const handleSectionChange = row => {
     const  { section, title } = row;
@@ -178,10 +172,10 @@ export default function App(props) {
   }
 
   // Saving and loading schedule
-  const [ uid, setUID ] = React.useState(' ');
+  const [ uid, setUID ] = useState(' ');
   
   // Parse URL on start
-  React.useEffect(() => {
+  useEffect(() => {
     const url = window.location.href;
     const array = url.split('/');
     const uid = array[array.length - 1];
@@ -193,8 +187,8 @@ export default function App(props) {
   const collection = useFirestore().collection('2021spring');
 
   // Save schedule onClick
-  const [isSaving, setIsSaving] = React.useState(false);
-  const [hasSaved, setHasSaved] = React.useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
   const saveSchedule = React.useCallback(async () => {
     if (isSaving) {
       return
@@ -213,41 +207,32 @@ export default function App(props) {
     }
   }).courses;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (scheduleData) {
       setCourses(scheduleData);
     }
   }, [scheduleData])
-
-  // TEMPORARY REDIRECT
-//   React.useEffect(() => {
-//     if (window.confirm(
-//       "Hey there! We realize that this is broken, and we're working on it. \n\nClicking something will take you to Coursicle for Bucknell. Trust me, we're as devastated as you are that it's broken. Happy scheduling! \n\n--Nick 😎, November 2 "
-//       )) {
-//       window.location.href = "http://coursicle.com/bucknell";
-//     } else {}
-//   })
     
   // Clear out schedule preview when modal is closed
-  React.useEffect(() => {
+  useEffect(() => {
     if (open) return undefined;
     setTempIntervals([]);
   }, [open])
 
   // Populate modal table when user clicks on a course chip
-  React.useEffect(() => {
+  useEffect(() => {
     if (!course.sections) return undefined;
     const rows = course.sections.map(section => createRow(section, seats))
     setRows(rows);
   }, [course])
 
   // Updates the sections to be displayed in schedule whenever selected courses/sections change
-  React.useEffect(() => {
+  useEffect(() => {
     const sections = courses.map(course => course.section || course.sections[0]);
     setSections(sections);
   }, [courses])
 
-  React.useEffect(() => {
+  useEffect(() => {
   	let intervals = [];
   	const lectureTimes = sections.map(section => parseMeetingTimes(section, intervals));
   	const classHour = Math.round(lectureTimes.reduce((a,b)=>a+b, 0) / 60 * 2) / 2;	
@@ -272,7 +257,7 @@ export default function App(props) {
   	setCRNs(CRNs);
   }, [sections, courses])
 	  
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       const CCR_codes = requirements.map(r => r.split('-')[0]);
       const CCR_filter = CCR_codes.map(c => `sections.Reqs.Code:"${c}"`).join(' AND ')
@@ -427,26 +412,15 @@ export default function App(props) {
             <br />Database last updated 04/11/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99}}>
-          <TableContainer className={classes.container} component={Paper} style={{margin: 'auto', width: '95%',}}>
-            <Table stickyHeader size="small" aria-label="sticky table" height="250px">
-              <TableHead>
-                <TableRow hover >
-                    <TableCell>
-                      Course Title
-                    </TableCell>
-                    <TableCell>
-                      Course Section
-                    </TableCell>
-                    <TableCell>
-                      CRN
-                    </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {CRNs}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {CRNsModal({
+            open: openCRNsModal,
+            handleClose: () => setOpenCRNsModal(false),
+            rows,
+            columns,
+            CRNs,
+            classes
+          })}
+          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={() => setOpenCRNsModal(true)}>Show CRN's</Button>
           <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
 
         </div>
