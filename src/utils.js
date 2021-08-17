@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const timeToMinute = timeObj => {
   const { hour, minute } = timeObj;
@@ -57,7 +57,8 @@ export function createRow(section_obj, seats_table) {
   const key = section_obj.Title + section; // for render list in React
   const title = `${section_obj.Subj} ${section_obj.Number} - ${section_obj.Title}`;
   const method = section_obj.DeliveryMethods;
-  return { section, crn, time, room, instructor, seats, credit, key, title, method, section_obj };
+  const links = section_obj;
+  return { section, crn, time, room, instructor, seats, credit, key, title, method, links, section_obj };
 }
 
 
@@ -107,6 +108,46 @@ const formatMethod = methods => {
   return result;
 }
 
+const formatLinks = section => {
+  const xmlLink = `<?xml version='1.0' encoding='UTF-8'?><textbookorder><school id='63056' ></school><courses><course dept='${section?.Subj}' num='${section?.Number}' sect='${section?.Section}' term='F219'></course></courses></textbookorder>`
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start'}}>
+      <a 
+        href={`https://banner.ban.bucknell.edu/prodssb/hwzkdpac.P_Bucknell_CGUpdate?formopt=VIEWSECT&term=${section?.Term}&updsubj=${section?.Subj}&crn=${section?.Crn}&viewterm=${section?.Term}`} 
+        style={{color: 'black'}}
+        target="_blank" 
+        rel="noopener noreferrer" >
+        Guide
+      </a>
+      <a 
+        href={`https://banner.ban.bucknell.edu/prodssb/bwckctlg.p_disp_course_detail?cat_term_in=${section?.Term}&subj_code_in=${section?.Subj}&crse_numb_in=${section?.Number}` }
+        style={{color: 'black'}}
+        target="_blank" 
+        rel="noopener noreferrer" >
+        Desc
+      </a>
+      <form action="https://securex.bncollege.com/webapp/wcs/stores/servlet/TBListView?cm_mmc=RI-_-737-_-A-_-1" method="POST" target="_blank" className="ng-pristine ng-valid">
+        <input type="hidden" name="termMapping" value="N" />
+        <input type="hidden" name="catalogId" value="10001" />
+        <input type="hidden" name="storeId" value="63056" />
+        <input type="hidden" name="courseXml" value={xmlLink} />
+        <input 
+          type="submit" 
+          value="Books" 
+          className="getBooksButton" 
+          style={{
+            border: '0',
+            backgroundColor: 'transparent',
+            fontSize: 'unset',
+            fontFamily: 'unset',
+            padding: '0',
+            cursor: 'pointer',
+          }} />
+      </form>
+    </div>
+  )
+}
+
 const reFormatMethod = method => {
   if (method === "RCAR") {return "Classroom and Remote Instruction"}
   else if (method === "RRMT") {return "Remote Instruction"}
@@ -150,10 +191,10 @@ export const columns = [
     format: value => value && value.toFixed(1),
   },
   {
-    id: 'method',
-    label: 'Delivery Method',
+    id: 'links',
+    label: 'Links',
     minWidth: 5,
-    format: value => formatMethod(value),
+    format: value => formatLinks(value),
   }
 ];
 

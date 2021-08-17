@@ -317,10 +317,10 @@ export default function App(props) {
           <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}><p>{ hasSaved ? window.location.origin+'/'+uid : ''}</p></div>
           <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
           <p className={classes.shamelessplug}>
-            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α </a> • Jimmy Wei '21 • 
-            <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer"> Nick DeMarchis '22 </a>
-            <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback </a> • 
-            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> Github &amp; bugs</a> 
+            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α</a>&nbsp;•&nbsp;Jimmy Wei '21&nbsp;•&nbsp;
+            <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer">Nick DeMarchis '22</a>
+            <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback</a>&nbsp;•&nbsp;
+            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer">Github &amp; bugs</a> 
             <br />Database last updated 04/11/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99}}>
@@ -334,6 +334,7 @@ export default function App(props) {
           <Button 
             style={{ padding: 10, margin: 15, width: "95%" }} 
             variant="outlined" 
+            disabled={CRNs.length <= 0}
             onClick={() => {
               CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
             }}

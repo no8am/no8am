@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 
 import { parseMeetingTimes } from '../utils';
 
@@ -51,16 +52,33 @@ const SectionModal = (props) => {
         >
         <Fade in={openSectionModal}>
           <Paper style={{width: modalWidth, margin: 'auto'}}>
-            <h2 className={classes.modalTitle}>{course.title}</h2>
+            <div style={{display: 'flex', flexDirection: 'row',     justifyContent: 'flex-start', alignItems: 'center'}}>
+              <h2 className={classes.modalTitle}>{course.title}</h2>
+              <Info 
+                onClick={() => {
+                  if (course.sections) {
+                    window.open(`https://coursecatalog.bucknell.edu/search/?P=${course?.department}%20${course.sections[0].Number}`,'_blank')
+                  }
+                }} 
+                style={{cursor: 'pointer', display: 'inline-block', padding: '10px'}}
+              />
+            </div>
             {course.sections && course.sections[0].Footnote && 
               <p className={classes.modalCCC}>
-                <span style={{fontWeight: "bold"}}>Footnote: </span>{course.sections[0].Footnote}
-                </p>
+                <span style={{fontWeight: "bold"}}>Footnote: </span>{course?.sections[0].Footnote}
+              </p>
             }
             {CCCs && <p className={classes.modalCCC}>
                       <span style={{fontWeight: "bold"}}>{"CCC: "}</span>{CCCs}
                      </p>}
-            <TableContainer className={classes.container}>
+              <TableContainer 
+                className={classes.container} 
+                component={Paper} 
+                style={{
+                  margin: 'auto', 
+                  width: modalWidth,
+                }}
+              >             
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
