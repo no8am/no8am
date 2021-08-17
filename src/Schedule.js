@@ -14,8 +14,7 @@ const HoverText = props => {
   return (
     <motion.g onMouseOver={e => setText(mouseOverText)}
         onMouseLeave={e => setText(defaultText)}
-        whileHover={{scale:1.2}} whileTap={{scale:0.95}}
-      
+        whileHover={{scale:1.1}} whileTap={{scale:0.95}}
     >
       <Bar    
         x={barX}
@@ -95,9 +94,9 @@ export default class Schedule extends React.Component {
       domain: y_domain, 
     });
  
-    const weekDayMapUsed = width < 540 ? (width < 300 ? weekDayMapSuperShort : weekDayMapShort) : weekDayMap;
-    const fontSize = width < 540 ? 10 : 16;
-    const textOffset = width < 540 ? 5 : 8;
+    const weekDayMapUsed = width < 600 ? (width < 300 ? weekDayMapSuperShort : weekDayMapShort) : weekDayMap;
+    const fontSize = width < 600 ? 10 : 16;
+    const textOffset = width < 600 ? 5 : 8;
 
     return (
       <div className="schedule" style={{ width, height, flex: '1' }}>
@@ -152,6 +151,7 @@ export default class Schedule extends React.Component {
           <Group top={margin.top+20} left={margin.left}>
             {combined_intervals.map((interval, i) => {
               const barWidth = xScale.bandwidth();
+              console.log(interval)
               let { start, end, weekDay, courseTitle, color, startText, endText } = interval;
               start = timeToMinute(start) - timeToMinute(first_class);
               end = timeToMinute(end) - timeToMinute(first_class);

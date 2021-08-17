@@ -119,11 +119,7 @@ export default function App(props) {
     }
   }).courses;
 
-  useEffect(() => {
-    if (scheduleData) {
-      setCourses(scheduleData);
-    }
-  }, [scheduleData])
+  useEffect(() => { if (scheduleData) { setCourses(scheduleData); } }, [scheduleData])
     
   // Clear out schedule preview when modal is closed
   useEffect(() => {
@@ -193,7 +189,7 @@ export default function App(props) {
   const SearchBox = () => (
     <Autocomplete
       size="small"
-      style={{marginLeft: 15, marginRight: 15, marginBottom: 15, marginTop: 45}}
+      style={{margin: '15px'}}
       //ListboxComponent={ListboxComponent}
       // loading={loading}
       autoHighlight
@@ -259,6 +255,10 @@ export default function App(props) {
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '45px'}}>
+          <h1 style={{margin: 0}}>&lsquo;ray schedule</h1>
+          <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
+        </div>
         { SearchBox() }
         <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row"}}>
         <Autocomplete
