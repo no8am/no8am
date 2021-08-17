@@ -321,7 +321,7 @@ export default function App(props) {
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer">Nick DeMarchis '22</a>
             <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback</a>&nbsp;•&nbsp;
             <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer">Github &amp; bugs</a> 
-            <br />Database last updated 04/11/2021.</p>
+            <br />Database last updated 08/17/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99}}>
           {CRNsModal({
