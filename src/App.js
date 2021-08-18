@@ -17,6 +17,8 @@ import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
 import { set } from 'lodash';
 
+import NewSchedule from './comps/NewSchedule';
+
 
 const searchClient = algoliasearch(
   ALGOLIA_APP_ID, 
@@ -342,13 +344,22 @@ export default function App(props) {
         </div>
       </div>
       <div/>
-      <Schedule
+      {/* <Schedule
         className={classes.schedule}
         intervals={intervals}
         tempIntervals={tempIntervals}
         margin={margin} 
         width={scheduleWidth} 
-        height={height}/>
+        height={height}/> */}
+
+      <NewSchedule 
+        intervals={intervals}
+        tempIntervals={tempIntervals}
+        margin={margin} 
+        width={scheduleWidth} 
+        height={height}
+        className={classes.schedule}
+      />
 
       { SectionModal({
         openSectionModal,

@@ -24,5 +24,17 @@ a:hover {
   font-family: "Prompt"
 }
 
+div.e-header-date.e-navigate {
+  display: none !important;
+}
+
+div.e-schedule-toolbar-container{
+  display: none !important;
+}
+
+div.e-header-day {
+  font-weight: 700;
+}
+
 @media only screen and (max-width: 600px) {
 }
