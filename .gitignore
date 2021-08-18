@@ -24,3 +24,7 @@ src/algolia.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+workspace.code-workspace
+# Local Netlify folder
+.netlify

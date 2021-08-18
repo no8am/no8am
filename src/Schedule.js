@@ -14,8 +14,7 @@ const HoverText = props => {
   return (
     <motion.g onMouseOver={e => setText(mouseOverText)}
         onMouseLeave={e => setText(defaultText)}
-        whileHover={{scale:1.2}} whileTap={{scale:0.95}}
-      
+        whileHover={{scale:1.1}} whileTap={{scale:0.95}}
     >
       <Bar    
         x={barX}
@@ -24,6 +23,7 @@ const HoverText = props => {
         height={barHeight}
         fill={color}
         opacity={opacity}
+        rx={5}
       />
       <Text
         x={barX+barWidth/2}
@@ -33,7 +33,7 @@ const HoverText = props => {
         fontSize={fontSize}
         textAnchor="middle"
         verticalAnchor="start"
-        style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Roboto"}}
+        style={{ cursor: "default", fill: "white", stroke: "white", fontFamily: "Prompt"}}
       >
       {text ? text : defaultText}
       </Text>
@@ -94,14 +94,14 @@ export default class Schedule extends React.Component {
       domain: y_domain, 
     });
  
-    const weekDayMapUsed = width < 540 ? (width < 300 ? weekDayMapSuperShort : weekDayMapShort) : weekDayMap;
-    const fontSize = width < 540 ? 10 : 16;
-    const textOffset = width < 540 ? 5 : 8;
+    const weekDayMapUsed = width < 600 ? (width < 300 ? weekDayMapSuperShort : weekDayMapShort) : weekDayMap;
+    const fontSize = width < 600 ? 10 : 16;
+    const textOffset = width < 600 ? 5 : 8;
 
     return (
-      <div className="schedule" style={{ width, height }}>
+      <div className="schedule" style={{ width, height, flex: '1' }}>
         <svg width={width} height={height}>
-          <rect x={0} y={0} width={width} height={height} fill={bg} rx={14}/>
+          <rect x={0} y={0} width={width} height={height} fill={bg} ry={10} />
           <Group left={margin.left}>
             <AxisLeft
               hideTicks
@@ -116,7 +116,7 @@ export default class Schedule extends React.Component {
                 fill: 'black',
                 textAnchor: 'end',
                 fontSize: 10,
-                fontFamily: 'Roboto',
+                fontFamily: 'Prompt',
                 dx: '-0.25em',
                 dy: '0.5em'
               })}
@@ -137,7 +137,7 @@ export default class Schedule extends React.Component {
                 fill: 'black',
                 textAnchor: 'middle',
                 fontSize: 15,
-                fontFamily: 'Roboto',
+                fontFamily: 'Prompt',
                 fontWeight: 'bold',
                 dx: '0em',
                 dy: '0.25em'
@@ -151,6 +151,7 @@ export default class Schedule extends React.Component {
           <Group top={margin.top+20} left={margin.left}>
             {combined_intervals.map((interval, i) => {
               const barWidth = xScale.bandwidth();
+              console.log(interval)
               let { start, end, weekDay, courseTitle, color, startText, endText } = interval;
               start = timeToMinute(start) - timeToMinute(first_class);
               end = timeToMinute(end) - timeToMinute(first_class);
