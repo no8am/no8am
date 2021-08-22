@@ -7,6 +7,15 @@ const NewSchedule = (props) => {
 
   const { intervals, width, height } = props;
 
+  const onEventRendered = React.useCallback((args) => {
+    let categoryColor = args.data.CategoryColor;
+    args.element.style.fontFamily = "Prompt";
+    if (!args.element || !categoryColor) {
+      return;
+    }
+    args.element.style.backgroundColor = categoryColor;
+  }, []);
+
   const data = intervals.map(interval => {
     let weekDayNum;
     switch (interval.weekDay) {
@@ -34,27 +43,26 @@ const NewSchedule = (props) => {
       StartTime: new Date(2018, 0, weekDayNum, interval.start.hour, interval.start.minute),
       EndTime: new Date(2018, 0, weekDayNum, interval.end.hour, interval.end.minute),
       IsAllDay: false,
-      Color: interval.color,
+      CategoryColor: interval.color.toString(),
     }
   })
-
-  console.log(data);
 
   return (
     <ScheduleComponent 
       width = {width}
       height = {height}
-      className="schedule"
-      readonly={true}
-      selectedDate={new Date(2018, 0, 1)}
-      eventSettings={{ 
+      className = "schedule"
+      readonly = {true}
+      selectedDate = {new Date(2018, 0, 1)}
+      eventRendered = {onEventRendered}
+      eventSettings = {{ 
         dataSource: data,
         fields: {
             subject: { name: 'Subject' },
             isAllDay: { name: 'IsAllDay' },
             startTime: { name: 'StartTime' },
             endTime: { name: 'EndTime' },
-            color: { name: 'Color' }
+            categoryColor: { name: 'CategoryColor' }
         }
     }}
     >
