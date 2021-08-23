@@ -151,7 +151,6 @@ export default class Schedule extends React.Component {
           <Group top={margin.top+20} left={margin.left}>
             {combined_intervals.map((interval, i) => {
               const barWidth = xScale.bandwidth();
-              console.log(interval)
               let { start, end, weekDay, courseTitle, color, startText, endText } = interval;
               start = timeToMinute(start) - timeToMinute(first_class);
               end = timeToMinute(end) - timeToMinute(first_class);
