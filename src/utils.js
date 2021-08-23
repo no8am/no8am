@@ -248,11 +248,13 @@ export function useWindowSize() {
 export const parseMeetingTimes = (section, intervals) => {
   const courseTitle = section.Subj + " " + section.Number;
   const { color } = section;
+  console.log(section);
   let totalLectureTime = 0;
   let meeting;
   for (meeting of section.Meetings) {
     const startText = meeting.Start;
     const endText = meeting.End;
+    const location = meeting.Location;
     if (!startText || !endText) continue;
     const start = {
       hour: parseInt(startText.slice(0,2)),
@@ -270,7 +272,7 @@ export const parseMeetingTimes = (section, intervals) => {
     if (meeting.R === "Y") weekDays += "R";
     if (meeting.F === "Y") weekDays += "F";
     for (weekDay of weekDays) {
-      intervals.push({ weekDay, start, end, courseTitle, color, startText, endText });
+      intervals.push({ weekDay, start, end, courseTitle, color, startText, endText, location });
       const lectureTime = (end.hour - start.hour) * 60 + (end.minute - start.minute);
       totalLectureTime += lectureTime;
     }

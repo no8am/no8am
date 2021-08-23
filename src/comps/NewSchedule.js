@@ -9,11 +9,10 @@ const NewSchedule = (props) => {
 
   const onEventRendered = React.useCallback((args) => {
     let categoryColor = args.data.CategoryColor;
-    args.element.style.fontFamily = "Prompt";
-    if (!args.element || !categoryColor) {
-      return;
-    }
-    args.element.style.backgroundColor = categoryColor;
+    if (!args.element || !categoryColor) { return; }
+    Object.assign(args.element.style, {
+      backgroundColor: categoryColor,
+    });
   }, []);
 
   const data = intervals.map(interval => {
@@ -38,12 +37,17 @@ const NewSchedule = (props) => {
         weekDayNum = 6;
         break;
     }
+
+    const onClick = (event) => {console.log("clicked!")}
+    const description = "Click here to adjust section, and to view course description and books.";
     return {
       Subject: interval.courseTitle,
       StartTime: new Date(2018, 0, weekDayNum, interval.start.hour, interval.start.minute),
       EndTime: new Date(2018, 0, weekDayNum, interval.end.hour, interval.end.minute),
       IsAllDay: false,
       CategoryColor: interval.color.toString(),
+      Description: description,
+      Location: interval.location,
     }
   })
 
@@ -62,7 +66,9 @@ const NewSchedule = (props) => {
             isAllDay: { name: 'IsAllDay' },
             startTime: { name: 'StartTime' },
             endTime: { name: 'EndTime' },
-            categoryColor: { name: 'CategoryColor' }
+            categoryColor: { name: 'CategoryColor' },
+            description: { name: 'Description' },
+            location: { name: 'Location' },
         }
     }}
     >
