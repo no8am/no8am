@@ -359,6 +359,8 @@ export default function App(props) {
         width={scheduleWidth} 
         height={height}
         className={classes.schedule}
+        courses={courses}
+        openCourseModal = {handleOpenSectionModal}
       />
 
       { SectionModal({

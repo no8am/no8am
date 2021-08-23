@@ -2,10 +2,12 @@ import React from 'react';
 import './NewSchedule.css'
 
 import { ScheduleComponent, WorkWeek, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
+import { Button } from '@material-ui/core';
+import { Room } from '@material-ui/icons';
 
 const NewSchedule = (props) => {
 
-  const { intervals, width, height } = props;
+  const { intervals, width, height, courses, openCourseModal } = props;
 
   const onEventRendered = React.useCallback((args) => {
     let categoryColor = args.data.CategoryColor;
@@ -37,9 +39,7 @@ const NewSchedule = (props) => {
         weekDayNum = 6;
         break;
     }
-
-    const onClick = (event) => {console.log("clicked!")}
-    const description = "Click here to adjust section, and to view course description and books.";
+    const description = "coming soon!";
     return {
       Subject: interval.courseTitle,
       StartTime: new Date(2018, 0, weekDayNum, interval.start.hour, interval.start.minute),
@@ -50,6 +50,45 @@ const NewSchedule = (props) => {
       Location: interval.location,
     }
   })
+
+  const eventRef = React.useRef();
+
+  const handleOpenCourseModal = (inProps) => {
+    for (let i = 0; i < courses.length; i++) {
+      if (inProps.Location.split(" ").join("") === courses[i].sections[0].Subj + courses[i].sections[0].Number) {
+        openCourseModal(courses[i]);
+      }
+    }
+  }
+
+  const contentTemplate = (props) => {
+    const [building, room] = props.Location.split(" ");
+    return (
+      <div className="event popup content" style={{
+        fontSize: '1.5em',
+      }}>
+        <div className="location" style={{padding: "10px"}}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "left",
+          }}>
+            <Room style={{padding: "10px"}}/>
+            <a style={{color: "black"}} href={`https://my.bucknell.edu/apps/m/building/${building}`} target="_blank" rel="noopener noreferrer">{building}</a>&nbsp;{room}
+          </div>
+          <div style={{opacity: "0.5", fontSize: '0.75em'}}>
+            For more detailed information, including to change section, click the chip from the main panel.
+          </div>
+        </div>
+        {/* <div className="description">
+          <Button variant="outlined" color="primary" onClick={() => {
+            window.alert("bad practice")
+            handleOpenCourseModal(props)
+          }}>Additional Info</Button>
+        </div>  */}
+      </div>
+    )
+  }
 
   return (
     <ScheduleComponent 
@@ -70,7 +109,11 @@ const NewSchedule = (props) => {
             description: { name: 'Description' },
             location: { name: 'Location' },
         }
-    }}
+      }}
+      ref={eventRef}
+      quickInfoTemplates={{
+        content: contentTemplate
+      }}
     >
       <ViewsDirective>
         <ViewDirective option='WorkWeek' startHour='08:00' endHour='22:00'/>
