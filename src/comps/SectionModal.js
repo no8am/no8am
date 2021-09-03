@@ -52,7 +52,7 @@ const SectionModal = (props) => {
         >
         <Fade in={openSectionModal}>
           <Paper style={{width: modalWidth, margin: 'auto'}}>
-            <div style={{display: 'flex', flexDirection: 'row',     justifyContent: 'flex-start', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'row',     justifyContent: 'flex-start', alignItems: 'baseline'}}>
               <h2 className={classes.modalTitle}>{course.title}</h2>
               <Info 
                 onClick={() => {
@@ -60,7 +60,7 @@ const SectionModal = (props) => {
                     window.open(`https://coursecatalog.bucknell.edu/search/?P=${course?.department}%20${course.sections[0].Number}`,'_blank')
                   }
                 }} 
-                style={{cursor: 'pointer', display: 'inline-block', padding: '10px'}}
+                style={{cursor: 'pointer', display: 'inline-block', padding: '0px 20px'}}
               />
             </div>
             {course.sections && course.sections[0].Footnote && 

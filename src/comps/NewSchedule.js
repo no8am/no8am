@@ -3,7 +3,7 @@ import './NewSchedule.css'
 
 import { ScheduleComponent, WorkWeek, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { Button } from '@material-ui/core';
-import { Room } from '@material-ui/icons';
+import { Room, Person } from '@material-ui/icons';
 
 const NewSchedule = (props) => {
 
@@ -48,6 +48,7 @@ const NewSchedule = (props) => {
       CategoryColor: interval.color.toString(),
       Description: description,
       Location: interval.location,
+      Instructors: interval.instructorString,
     }
   })
 
@@ -55,37 +56,76 @@ const NewSchedule = (props) => {
 
   const handleOpenCourseModal = (inProps) => {
     for (let i = 0; i < courses.length; i++) {
-      if (inProps.Location.split(" ").join("") === courses[i].sections[0].Subj + courses[i].sections[0].Number) {
+      let name = inProps.Subject.split(" ").join("")
+      let name2 = courses[i].sections[0].Subj + courses[i].sections[0].Number
+      if (name === name2) {
         openCourseModal(courses[i]);
       }
     }
   }
 
-  const contentTemplate = (props) => {
+  const bulletPoints = (props) => {
     const [building, room] = props.Location.split(" ");
+    let instructorList = props.Instructors.split("; ")
+    let instructorLinks = instructorList.map((instructor, index) => {
+      let instructorPretty = instructor.split(" ")
+      if (instructorPretty.length > 2) { instructorPretty.pop() }
+      instructorPretty = instructorPretty.map(word => word.replace(",", ""));
+      instructorPretty.unshift(instructorPretty.pop())
+      instructorPretty.join(" ");
+      const end = index === instructorList.length - 1 ? " " : "; "
+      return (
+      <span><a 
+        style={{color: "black"}} 
+        href={`https://www.ratemyprofessors.com/search/teachers?query=${instructorPretty}&sid=U2Nob29sLTE0MA==`} 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >{instructor}</a>{end}</span>
+      );
+    })
+
+    return (
+      <div className="location" style={{padding: "10px"}}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "left",
+        }}>
+          <Room style={{padding: "10px 10px 10px 0px"}}/>
+          <span>
+            <a 
+            style={{color: "black"}} 
+            href={`https://my.bucknell.edu/apps/m/building/${building}`} 
+            target="_blank" 
+            rel="noopener noreferrer">
+              {building}&nbsp;{room}
+            </a>
+          </span>
+        </div>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "left",
+        }}>
+          <Person style={{padding: "10px 10px 10px 0px"}}/>
+          <span>{instructorLinks}</span>
+        </div>
+    </div>
+    )
+  }
+
+  const contentTemplate = (props) => {
     return (
       <div className="event popup content" style={{
         fontSize: '1.5em',
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
       }}>
-        <div className="location" style={{padding: "10px"}}>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "left",
-          }}>
-            <Room style={{padding: "10px"}}/>
-            <a style={{color: "black"}} href={`https://my.bucknell.edu/apps/m/building/${building}`} target="_blank" rel="noopener noreferrer">{building}</a>&nbsp;{room}
-          </div>
-          <div style={{opacity: "0.5", fontSize: '0.75em'}}>
-            For more detailed information, including to change section, click the chip from the main panel.
-          </div>
-        </div>
-        {/* <div className="description">
-          <Button variant="outlined" color="primary" onClick={() => {
-            window.alert("bad practice")
-            handleOpenCourseModal(props)
-          }}>Additional Info</Button>
-        </div>  */}
+        {bulletPoints(props)}
+        <div className="description" style={{padding: "15px"}}>
+          <Button variant="outlined" color="primary" onClick={() => {handleOpenCourseModal(props)}}>Edit</Button>
+        </div> 
       </div>
     )
   }
@@ -108,6 +148,7 @@ const NewSchedule = (props) => {
             categoryColor: { name: 'CategoryColor' },
             description: { name: 'Description' },
             location: { name: 'Location' },
+            instructors: { name: 'Instructors' },
         }
       }}
       ref={eventRef}
