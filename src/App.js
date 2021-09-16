@@ -241,9 +241,7 @@ export default function App(props) {
               onClick={()=>handleOpenSectionModal(option)}
               style={{backgroundColor:option.color}}
               label={(
-                <section 
-                  // style={{fontFamily: "Roboto"}}
-                >
+                <section>
                   <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.sections[0].DeptCodes[0] + " " + option.sections[0].Number}</span>
                   <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
                 </section>
@@ -262,7 +260,7 @@ export default function App(props) {
           <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
         { SearchBox() }
-        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row"}}>
+        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", margin: "0px 15px"}}>
         <Autocomplete
           size="small"
           autoHighlight
@@ -272,7 +270,7 @@ export default function App(props) {
           onChange={(e, reqs) => setRequirements(reqs) }
           id="add-requirement-autocomplete"
           options={requirementList}
-          style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "left"}}
+          style={{marginRight: '5px', width: "100%"}}
           renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
           renderOption={(option, { inputValue }) => {
             // Highlight parts of text that matches input
@@ -296,7 +294,7 @@ export default function App(props) {
             onChange={(e, instructor) => setInstructor(instructor) }
             id="add-instructor-autocomplete"
             options={instructorList}
-            style={{ width: courseSelectorWidth * 0.45, marginLeft: 15, marginRight: 15, marginBottom: 15, float: "right"}}
+            style={{marginLeft: '5px', width: "100%"}}
             renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
             renderOption={(option, { inputValue }) => {
               // Highlight parts of text that matches input
@@ -321,11 +319,9 @@ export default function App(props) {
           <p className={classes.shamelessplug}>
             <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α</a>&nbsp;•&nbsp;Jimmy Wei '21&nbsp;•&nbsp;
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer">Nick DeMarchis '22</a>
-            <br /><a href="https://forms.gle/h7A8zgGPAm7PpWDr5" target="_blank" rel="noopener noreferrer">Feedback</a>&nbsp;•&nbsp;
-            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer">Github &amp; bugs</a> 
-            <br />Database last updated 08/17/2021.</p>
+            <br /><b><a href="mailto:hi@rayschedule.com">Feedback</a></b>&nbsp;•&nbsp;Database last updated 08/17/2021.</p>
         </div>
-        <div className={classes.CRNs} style={{zIndex: 99}}>
+        <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
           {CRNsModal({
             open: openCRNsModal,
             handleClose: () => setOpenCRNsModal(false),
@@ -334,7 +330,7 @@ export default function App(props) {
             modalWidth,
           })}
           <Button 
-            style={{ padding: 10, margin: 15, width: "95%" }} 
+            style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
             disabled={CRNs.length <= 0}
             onClick={() => {
