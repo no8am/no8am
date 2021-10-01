@@ -14,12 +14,7 @@ Please contact us if the database needs to be updated, one must pull manually fr
 * Courses scheduled at the same time overlap, instead of appearing side-by-side.
 * The CRN table doesn't look right.
 
-## To-do list
-
-* Add descriptions to section selection windows, that way people know what class they're signing up for
-* Add RateMyProfessor links to each professor's name systematically?
-* Reframe schedule for extra early / late classes (we *love* everything that our 30-minute in-between class period does, right?)
-* Add 12-hour time
+## [To-do list](https://github.com/no8am/no8am/issues)
 
 ## Develop
 ```bash
