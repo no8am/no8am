@@ -65,7 +65,7 @@ const NewSchedule = (props) => {
   }
 
   const bulletPoints = (props) => {
-    const [building, room] = props.Location.split(" ");
+    const [building, room] = props.Location ? props.Location.split(" ") : ["", ""];
     let instructorList = props.Instructors.split("; ")
     let instructorLinks = instructorList.map((instructor, index) => {
       let instructorPretty = instructor.split(" ")
@@ -86,22 +86,24 @@ const NewSchedule = (props) => {
 
     return (
       <div className="location" style={{padding: "10px"}}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "left",
-        }}>
-          <Room style={{padding: "10px 10px 10px 0px"}}/>
-          <span>
-            <a 
-            style={{color: "black"}} 
-            href={`https://my.bucknell.edu/apps/m/building/${building}`} 
-            target="_blank" 
-            rel="noopener noreferrer">
-              {building}&nbsp;{room}
-            </a>
-          </span>
-        </div>
+        {(building) && (
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "left",
+          }}>
+            <Room style={{padding: "10px 10px 10px 0px"}}/>
+            <span>
+              <a 
+              style={{color: "black"}} 
+              href={`https://my.bucknell.edu/apps/m/building/${building}`} 
+              target="_blank" 
+              rel="noopener noreferrer">
+                {building}&nbsp;{room}
+              </a>
+            </span>
+          </div>
+        )}
         <div style={{
           display: "flex",
           alignItems: "center",

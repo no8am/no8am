@@ -235,6 +235,7 @@ export default function App(props) {
             </div>
           );
         }}
+        
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip
@@ -319,7 +320,7 @@ export default function App(props) {
           <p className={classes.shamelessplug}>
             <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α</a>&nbsp;•&nbsp;Jimmy Wei '21&nbsp;•&nbsp;
             <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer">Nick DeMarchis '22</a>
-            <br /><b><a href="mailto:hi@rayschedule.com">Feedback</a></b>&nbsp;•&nbsp;Database last updated 08/17/2021.</p>
+            <br /><b><a href="mailto:hi@rayschedule.com">Feedback</a></b>&nbsp;•&nbsp;Database last updated 10/03/2021.</p>
         </div>
         <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
           {CRNsModal({
