@@ -26,7 +26,7 @@ const BigBox = (props) => {
         renderInput={params => (
         <TextField
         {...params}
-        label="Add Course (*click chip to select section)"
+        label="Add Course (click course to select section)"
         variant="outlined"
         InputProps={{
             ...params.InputProps,

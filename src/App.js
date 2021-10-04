@@ -203,15 +203,17 @@ export default function App(props) {
         </div>
 
         { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal}) }
-        { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
+        {/* { Filters({requirementList, setRequirements, instructorList, setInstructor}) } */}
         { BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}) }
 
         <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
 
-          {/* {FilterModal({
+          {FilterModal({
             open: openFilterModal,
             handleClose: () => setOpenFilterModal(false),
-          })} */}
+            courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, 
+            requirementList, setRequirements, instructorList, setInstructor
+          })}
 
           {CRNsModal({
             open: openCRNsModal,
@@ -219,11 +221,11 @@ export default function App(props) {
             CRNs, classes, modalWidth,
           })}
 
-          {/* <Button 
+          <Button 
             style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
             onClick={() => { setOpenFilterModal(true); }}
-          >Modal test</Button> */}
+          >Filters</Button>
           <Button 
             style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
