@@ -13,11 +13,15 @@ import { useStyles } from './comps/styles';
 import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
 import CRNsModal from './comps/CRNsModal';
 import SectionModal from './comps/SectionModal';
+import FilterModal from './comps/FilterModal';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
 import { set } from 'lodash';
 
 import NewSchedule from './comps/NewSchedule';
+import BigBox from './comps/search/BigBox';
+import Filters from './comps/search/Filters';
+import BottomText from './comps/BottomText';
 
 
 const searchClient = algoliasearch(
@@ -62,6 +66,7 @@ export default function App(props) {
   // Modal/ Table
   const [openSectionModal, setOpenSectionModal] = useState(false);
   const [openCRNsModal, setOpenCRNsModal] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
   const [rows, setRows] = useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
@@ -188,148 +193,37 @@ export default function App(props) {
     })();
   }, [query, requirements, instructor, deliveryFormat]);
 
-  const SearchBox = () => (
-    <Autocomplete
-      size="small"
-      style={{margin: '15px'}}
-      //ListboxComponent={ListboxComponent}
-      // loading={loading}
-      autoHighlight
-      filterSelectedOptions
-      multiple
-      value={courses}
-      onChange={(e, courses) => setCourses(courses) }
-      onInputChange={(e, query) => setQuery(query) }
-      id="add-course-autocomplete"
-      options={filteredCourseList}
-      getOptionLabel={option => option.title}
-      renderInput={params => (
-      <TextField
-        {...params}
-        label="Add Course (*click chip to select section)"
-        variant="outlined"
-        InputProps={{
-          ...params.InputProps,
-          endAdornment: (
-            <React.Fragment>
-              {
-                //loading ? <CircularProgress color="inherit" size={20} /> : null
-              }
-              {params.InputProps.endAdornment}
-            </React.Fragment>
-              ),
-            }}
-          />
-        )}
-        renderOption={(option, { inputValue }) => {
-          // Highlight parts of text that matches input
-          const matches = match(option.title, inputValue);
-          const parts = parse(option.title, matches);
-          return (
-            <div>
-              {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                  {part.text}
-                </span>
-              ))}
-            </div>
-          );
-        }}
-        
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip
-              onClick={()=>handleOpenSectionModal(option)}
-              style={{backgroundColor:option.color}}
-              label={(
-                <section>
-                  <span style={{fontWeight: "bold", marginRight: 5, color: "white"}}> {option.sections[0].DeptCodes[0] + " " + option.sections[0].Number}</span>
-                  <span style={{verticalAlign: "middle", color: "white", fontSize: 10}}> {`${option.sections.length} ` + (option.sections.length === 1 ? "Section" : "Sections")}</span>
-                </section>
-              )}
-              {...getTagProps({ index })} />
-          ))
-        }
-    />
-  )
-
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
+
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '45px'}}>
           <h1 style={{margin: 0}}>&lsquo;ray schedule</h1>
           <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
-        { SearchBox() }
-        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", margin: "0px 15px"}}>
-        <Autocomplete
-          size="small"
-          autoHighlight
-          disableListWrap
-          multiple
-          filterSelectedOptions
-          onChange={(e, reqs) => setRequirements(reqs) }
-          id="add-requirement-autocomplete"
-          options={requirementList}
-          style={{marginRight: '5px', width: "100%"}}
-          renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
-          renderOption={(option, { inputValue }) => {
-            // Highlight parts of text that matches input
-            const matches = match(option, inputValue);
-            const parts = parse(option, matches);
-            return (
-              <div>
-                {parts.map((part, index) => (
-                  <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            );
-          }}
-        />
-          <Autocomplete
-            size="small"
-            autoHighlight
-            filterSelectedOptions
-            onChange={(e, instructor) => setInstructor(instructor) }
-            id="add-instructor-autocomplete"
-            options={instructorList}
-            style={{marginLeft: '5px', width: "100%"}}
-            renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
-            renderOption={(option, { inputValue }) => {
-              // Highlight parts of text that matches input
-              const matches = match(option, inputValue);
-              const parts = parse(option, matches);
-              return (
-                <div>
-                  {parts.map((part, index) => (
-                    <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                      {part.text}
-                    </span>
-                  ))}
-                </div>
-              );
-            }}
-          />
-        </div>
-        <div className={classes.bottomText}>
-          <Button style={{ padding: 10, margin: 15, width: "95%" }} variant="outlined" onClick={saveSchedule}>Save Schedule</Button>
-          <div style={{ color: 'white', marginBottom: 10 }} className={classes.classHour}><p>{ hasSaved ? window.location.origin+'/'+uid : ''}</p></div>
-          <p className={classes.classHour}> {credits[0] == null ? 0 : credits[0]} credits, {classHour} class hours </p>          
-          <p className={classes.shamelessplug}>
-            <a href="https://github.com/no8am/no8am" target="_blank" rel="noopener noreferrer"> © 2021 no8am.v3α</a>&nbsp;•&nbsp;Jimmy Wei '21&nbsp;•&nbsp;
-            <a href="http://nickdemarchis.com" target="_blank" rel="noopener noreferrer">Nick DeMarchis '22</a>
-            <br /><b><a href="mailto:hi@rayschedule.com">Feedback</a></b>&nbsp;•&nbsp;Database last updated 10/03/2021.</p>
-        </div>
+
+        { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal}) }
+        { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
+        { BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}) }
+
         <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
+
+          {/* {FilterModal({
+            open: openFilterModal,
+            handleClose: () => setOpenFilterModal(false),
+          })} */}
+
           {CRNsModal({
             open: openCRNsModal,
             handleClose: () => setOpenCRNsModal(false),
-            CRNs,
-            classes,
-            modalWidth,
+            CRNs, classes, modalWidth,
           })}
+
+          {/* <Button 
+            style={{ margin: "15px", width: "100%" }} 
+            variant="outlined" 
+            onClick={() => { setOpenFilterModal(true); }}
+          >Modal test</Button> */}
           <Button 
             style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
@@ -338,17 +232,10 @@ export default function App(props) {
               CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
             }}
           >Show CRN's</Button>
+
         </div>
       </div>
       <div/>
-      {/* <Schedule
-        className={classes.schedule}
-        intervals={intervals}
-        tempIntervals={tempIntervals}
-        margin={margin} 
-        width={scheduleWidth} 
-        height={height}/> */}
-
       <NewSchedule 
         intervals={intervals}
         tempIntervals={tempIntervals}
