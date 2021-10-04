@@ -1,19 +1,18 @@
 import React from 'react'
 import { Autocomplete } from '@material-ui/lab';
-import { TextField, Chip } from '@material-ui/core';
+import { TextField, Chip, Tooltip } from '@material-ui/core';
+import { FilterList } from '@material-ui/icons';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
 const BigBox = (props) => {
 
-    const {courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal} = props;
+    const {courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal} = props;
         
     return (
     <Autocomplete
         size="small"
         style={{margin: '15px'}}
-        //ListboxComponent={ListboxComponent}
-        // loading={loading}
         autoHighlight
         filterSelectedOptions
         multiple
@@ -32,17 +31,18 @@ const BigBox = (props) => {
             ...params.InputProps,
             endAdornment: (
             <React.Fragment>
-                {
-                //loading ? <CircularProgress color="inherit" size={20} /> : null
-                }
                 {params.InputProps.endAdornment}
+                {!props?.noFilterIcon && (
+                    <Tooltip title="Filter" arrow>
+                        <FilterList onClick={() => setOpenFilterModal(true)} style={{cursor: "pointer"}}/>
+                    </Tooltip>
+                )}
             </React.Fragment>
                 ),
             }}
             />
         )}
         renderOption={(option, { inputValue }) => {
-            // Highlight parts of text that matches input
             const matches = match(option.title, inputValue);
             const parts = parse(option.title, matches);
             return (

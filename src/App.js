@@ -202,9 +202,8 @@ export default function App(props) {
           <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
 
-        { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal}) }
+        { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }
         {/* { Filters({requirementList, setRequirements, instructorList, setInstructor}) } */}
-        { BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}) }
 
         <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
 
@@ -212,28 +211,26 @@ export default function App(props) {
             open: openFilterModal,
             handleClose: () => setOpenFilterModal(false),
             courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, 
-            requirementList, setRequirements, instructorList, setInstructor
+            requirementList, setRequirements, instructorList, setInstructor,
+            bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits})
           })}
 
           {CRNsModal({
             open: openCRNsModal,
             handleClose: () => setOpenCRNsModal(false),
             CRNs, classes, modalWidth,
+            bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}),
           })}
 
           <Button 
             style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
-            onClick={() => { setOpenFilterModal(true); }}
-          >Filters</Button>
-          <Button 
-            style={{ margin: "15px", width: "100%" }} 
-            variant="outlined" 
-            disabled={CRNs.length <= 0}
+            // disabled={CRNs.length <= 0}
             onClick={() => {
-              CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
+              // CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
+              setOpenCRNsModal(true);
             }}
-          >Show CRN's</Button>
+          >Export</Button>
 
         </div>
       </div>
