@@ -32,37 +32,39 @@ const CRNsModal = (props) => {
         <Fade in={open}>
           <Paper style={{width: "40%", padding: "20px"}}>
             <div>
-              {bottomText}
+              {CRNs.length > 0  && (
+                <TableContainer 
+                  className={classes.container} 
+                  component={Paper} 
+                  style={{
+                    margin: 'auto', 
+                    // width: modalWidth,
+                  }}
+                >
+                  <Table stickyHeader size="small" aria-label="sticky table">
+                    <TableHead>
+                      <TableRow hover >
+                        <TableCell>
+                          Course Title
+                        </TableCell>
+                        <TableCell>
+                          Section
+                        </TableCell>
+                        <TableCell>
+                          CRN
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {CRNs}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+              <div>
+                {bottomText}
+              </div>
             </div>
-            {CRNs.length > 0  && (
-              <TableContainer 
-                className={classes.container} 
-                component={Paper} 
-                style={{
-                  margin: 'auto', 
-                  // width: modalWidth,
-                }}
-              >
-                <Table stickyHeader size="small" aria-label="sticky table">
-                  <TableHead>
-                    <TableRow hover >
-                      <TableCell>
-                        Course Title
-                      </TableCell>
-                      <TableCell>
-                        Section
-                      </TableCell>
-                      <TableCell>
-                        CRN
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {CRNs}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
           </Paper>
         </Fade>
       </Modal>

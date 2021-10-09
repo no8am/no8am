@@ -32,7 +32,6 @@ const FilterModal = (props) => {
                 }}> 
                     { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, noFilterIcon: true}) }
                     { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
-                    {/* { bottomText } */}
                 </Paper>
             </Fade>
         </Modal>

@@ -22,7 +22,7 @@ import NewSchedule from './comps/NewSchedule';
 import BigBox from './comps/search/BigBox';
 import Filters from './comps/search/Filters';
 import BottomText from './comps/BottomText';
-
+import ScheduleSelect from './comps/ScheduleSelect';
 
 const searchClient = algoliasearch(
   ALGOLIA_APP_ID, 
@@ -50,6 +50,7 @@ export default function App(props) {
   const [query, setQuery] = useState(''); // Algolia search queary
   const [course, setCourse] = useState({}); // for section selection of a single course
   const [courses, setCourses] = useState([]); // currently selected courses on schedule
+  const [schedules, setSchedules] = useState({}); // object of schedules
   const [sections, setSections] = useState([]); // currently selected course sections
   const [classHour, setClassHour] = useState(0); // total class hours
   const [intervals, setIntervals] = useState([]); // a list of [start, end] periods for shcedule display
@@ -98,9 +99,7 @@ export default function App(props) {
     const url = window.location.href;
     const array = url.split('/');
     const uid = array[array.length - 1];
-    if (uid) {
-      setUID(uid);      
-    }
+    if (uid) { setUID(uid); }
   }, [])
 
   const collection = useFirestore().collection('2021spring');
@@ -113,7 +112,7 @@ export default function App(props) {
       return
     }
     setIsSaving(true);
-    const result = await collection.add({ courses });
+    const result = await collection.add({ courses }); 
     setUID(result.id);
     setIsSaving(false);
     setHasSaved(true);
@@ -193,6 +192,30 @@ export default function App(props) {
     })();
   }, [query, requirements, instructor, deliveryFormat]);
 
+  const addSchedulesEntry = (args) => {
+    console.log("adding entry for args:")
+    console.log(args)
+    console.log(schedules)
+    setSchedules(prevState => (
+      {
+        ...prevState, 
+        [args.id]: args
+      }
+    ));
+    console.log(schedules)
+  };
+
+  const updateScheduleName = (id, name) => {
+    setSchedules(prevState => ({...prevState, [id]: {...prevState[id], name}}));
+  };
+
+  const updateScheduleCourses = (id) => {
+    const vary = Object.assign({}, schedules[id])
+    setCourses(() => {
+      return vary.courses
+    });
+  };
+
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
@@ -203,13 +226,16 @@ export default function App(props) {
         </div>
 
         { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }
-        {/* { Filters({requirementList, setRequirements, instructorList, setInstructor}) } */}
 
         <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
 
           {FilterModal({
             open: openFilterModal,
-            handleClose: () => setOpenFilterModal(false),
+            handleClose: () => {
+              setInstructor(null);
+              setRequirements([]);
+              setOpenFilterModal(false);
+            },
             courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, 
             requirementList, setRequirements, instructorList, setInstructor,
             bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits})
@@ -225,13 +251,16 @@ export default function App(props) {
           <Button 
             style={{ margin: "15px", width: "100%" }} 
             variant="outlined" 
-            // disabled={CRNs.length <= 0}
             onClick={() => {
-              // CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
               setOpenCRNsModal(true);
             }}
           >Export</Button>
-
+          {/* <Button onClick={() => {
+            const frank = (new Date()).getSeconds();
+            addSchedulesEntry({id:frank, display: (new Date()).getSeconds(), schedule: []})
+            console.log(schedules)
+          }}>Save</Button> */}
+          { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses}) }
         </div>
       </div>
       <div/>
