@@ -40,10 +40,11 @@ const margin = {
 
 export default function App(props) {
   const { width, height } = useWindowSize();
-  const courseSelectorWidth = width < 600 ? width : width * 0.4;
-  const modalWidth = width < 600 ? width : width * 0.5;
-  const scheduleWidth = width < 600 ? width : width * 0.6;
-  const appHeight = width < 600 ? height * 2 : height;
+  // const courseSelectorWidth = width < 600 ? width : width * 0.4;
+  // const modalWidth = width < 600 ? width : width * 0.5;
+  // const scheduleWidth = width < 600 ? width : width * 0.6;
+  // const appHeight = width < 600 ? height * 2 : height;
+  const {courseSelectorWidth, modalWidth, scheduleWidth, appHeight} = "unset";
   const classes = useStyles();
   
   // Courses
@@ -217,17 +218,19 @@ export default function App(props) {
   };
 
 	 return (
-    <div className={classes.app} style={{ width, height: appHeight }}>
-      <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
+    // <div className={classes.app} style={{ width, height: appHeight }}>
+    <div className={classes.app}>
+      {/* <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}> */}
+      <div className={classes.courseSelector}>
 
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '45px'}}>
-          <h1 style={{margin: 0}}>&lsquo;ray schedule</h1>
+        <div className={"flex w-4/5"}>
+          <h1 className={"flex"} style={{margin: 0}}>&lsquo;ray schedule</h1>
           <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
 
         { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }
 
-        <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
+        <div className={"flex"} style={{zIndex: 99, display: "flex"}}>
 
           {FilterModal({
             open: openFilterModal,
