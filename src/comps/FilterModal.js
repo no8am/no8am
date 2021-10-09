@@ -1,20 +1,16 @@
 import React from 'react';
 import {
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableRow, 
-  TableContainer, 
   Paper, 
   Modal, 
   Backdrop, 
   Fade
-} from '@material-ui/core';
+} from '@mui/material';
+import BigBox from './search/BigBox';
+import Filters from './search/Filters';
 
 const FilterModal = (props) => {
 
-    const {open, handleClose} = props;
+    const {open, handleClose, courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, requirementList, setRequirements, instructorList, setInstructor, bottomText} = props;
 
     return (
         <Modal
@@ -25,6 +21,7 @@ const FilterModal = (props) => {
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
+        style={{width: "40%"}}
         BackdropProps={{
         timeout: 500,
         }}
@@ -32,8 +29,9 @@ const FilterModal = (props) => {
             <Fade in={open}>
                 <Paper style={{
                     padding: "20px"
-                }}>
-                    hey!
+                }}> 
+                    { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, noFilterIcon: true}) }
+                    { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
                 </Paper>
             </Fade>
         </Modal>

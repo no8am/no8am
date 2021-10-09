@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   listbox: {
@@ -9,15 +9,15 @@ const useStyles = makeStyles(theme => ({
     },
   },
   bottomText: {
-    position: "absolute",
-    bottom: 0,
-    color: "white",
-    [theme.breakpoints.down('xs')]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up('sm')]: {
-        width: "40%",   
-      },
+    // position: "absolute",
+    // bottom: 0,
+    // color: "white",
+    // [theme.breakpoints.down('xs')]: {
+    //     width: "100%",
+    //   },
+    //   [theme.breakpoints.up('sm')]: {
+    //     width: "40%",   
+    //   },
   },
   shamelessplug: {
     textAlign: "center",
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   app: {
     display: "flex",
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
         flexDirection: "column",
       },
       [theme.breakpoints.up('sm')]: {

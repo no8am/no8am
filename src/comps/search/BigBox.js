@@ -1,19 +1,18 @@
 import React from 'react'
-import { Autocomplete } from '@material-ui/lab';
-import { TextField, Chip } from '@material-ui/core';
+import { Autocomplete } from '@mui/material';
+import { TextField, Chip, Tooltip } from '@mui/material';
+import { FilterList } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
 const BigBox = (props) => {
 
-    const {courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal} = props;
+    const {courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal} = props;
         
     return (
     <Autocomplete
         size="small"
         style={{margin: '15px'}}
-        //ListboxComponent={ListboxComponent}
-        // loading={loading}
         autoHighlight
         filterSelectedOptions
         multiple
@@ -26,23 +25,23 @@ const BigBox = (props) => {
         renderInput={params => (
         <TextField
         {...params}
-        label="Add Course (*click chip to select section)"
-        variant="outlined"
+        label="Add Course (click course to select section)"
         InputProps={{
             ...params.InputProps,
             endAdornment: (
             <React.Fragment>
-                {
-                //loading ? <CircularProgress color="inherit" size={20} /> : null
-                }
                 {params.InputProps.endAdornment}
+                {!props?.noFilterIcon && (
+                    <Tooltip title="Filter" arrow>
+                        <FilterList onClick={() => setOpenFilterModal(true)} style={{cursor: "pointer", marginRight: "30px"}}/>
+                    </Tooltip>
+                )}
             </React.Fragment>
                 ),
             }}
             />
         )}
         renderOption={(option, { inputValue }) => {
-            // Highlight parts of text that matches input
             const matches = match(option.title, inputValue);
             const parts = parse(option.title, matches);
             return (

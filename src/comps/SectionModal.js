@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Backdrop, Fade } from '@material-ui/core';
-import { Info } from '@material-ui/icons';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Backdrop, Fade } from '@mui/material';
+import { Info } from '@mui/icons-material';
 
 import { parseMeetingTimes } from '../utils';
 
