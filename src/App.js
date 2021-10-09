@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Schedule from './Schedule';
-import { Autocomplete } from '@material-ui/lab';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Autocomplete } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';

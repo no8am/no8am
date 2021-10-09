@@ -8,8 +8,8 @@ import {
     Select,
     FormControl,
     Tooltip,
-} from "@material-ui/core";
-import { Create, Cloud } from "@material-ui/icons";
+} from "@mui/material";
+import { Create, Cloud } from "@mui/icons-material";
 
 const ScheduleSelect = ({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses}) => {  
 

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Autocomplete } from '@material-ui/lab';
-import { TextField, Chip, Tooltip } from '@material-ui/core';
-import { FilterList } from '@material-ui/icons';
+import { Autocomplete } from '@mui/material';
+import { TextField, Chip, Tooltip } from '@mui/material';
+import { FilterList } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
@@ -26,7 +26,6 @@ const BigBox = (props) => {
         <TextField
         {...params}
         label="Add Course (click course to select section)"
-        variant="outlined"
         InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -34,7 +33,7 @@ const BigBox = (props) => {
                 {params.InputProps.endAdornment}
                 {!props?.noFilterIcon && (
                     <Tooltip title="Filter" arrow>
-                        <FilterList onClick={() => setOpenFilterModal(true)} style={{cursor: "pointer"}}/>
+                        <FilterList onClick={() => setOpenFilterModal(true)} style={{cursor: "pointer", marginRight: "30px"}}/>
                     </Tooltip>
                 )}
             </React.Fragment>

@@ -2,8 +2,8 @@ import React from 'react';
 import './NewSchedule.css'
 
 import { ScheduleComponent, WorkWeek, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
-import { Button } from '@material-ui/core';
-import { Room, Person } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import { Room, Person } from '@mui/icons-material';
 
 const NewSchedule = (props) => {
 

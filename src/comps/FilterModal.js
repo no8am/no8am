@@ -4,7 +4,7 @@ import {
   Modal, 
   Backdrop, 
   Fade
-} from '@material-ui/core';
+} from '@mui/material';
 import BigBox from './search/BigBox';
 import Filters from './search/Filters';
 

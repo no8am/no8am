@@ -6,9 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
 import ReactGA from 'react-ga';
 import { FirebaseAppProvider, SuspenseWithPerf } from 'reactfire';
-import { CircularProgress } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { CircularProgress, adaptV4Theme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -35,22 +35,24 @@ function FirebaseApp() {
 
 
 
-const theme = createMuiTheme({
+const theme = createTheme(adaptV4Theme({
     typography: {
       fontFamily: [
         'Prompt'
       ].join(','),
     },
-  });
+  }));
 
 const trackingId = "UA-159254061-1"; // Google Analytics tracking ID
 ReactGA.initialize(trackingId);
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
-        <FirebaseApp/>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+          <FirebaseApp/>
+      </ThemeProvider>
+    </StyledEngineProvider>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

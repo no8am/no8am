@@ -10,7 +10,7 @@ import {
   Modal, 
   Backdrop, 
   Fade
-} from '@material-ui/core';
+} from '@mui/material';
 
 const CRNsModal = (props) => {
 
