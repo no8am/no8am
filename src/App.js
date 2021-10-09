@@ -112,20 +112,20 @@ export default function App(props) {
       return
     }
     setIsSaving(true);
-    const result = await collection.add({ courses }); 
+    const result = await collection.add({ schedules }); 
     setUID(result.id);
     setIsSaving(false);
     setHasSaved(true);
-  }, [isSaving, courses, collection])
+  }, [isSaving, courses, schedules, collection])
 
   // Load schedule
   const scheduleData = useFirestoreDocData(collection.doc(uid), {
     startWithValue: {
-      courses: []
+      schedules: []
     }
-  }).courses;
+  }).schedules;
 
-  useEffect(() => { if (scheduleData) { setCourses(scheduleData); } }, [scheduleData])
+  useEffect(() => { if (scheduleData) { setSchedules(scheduleData); } }, [scheduleData])
     
   // Clear out schedule preview when modal is closed
   useEffect(() => {
