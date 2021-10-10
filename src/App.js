@@ -4,6 +4,7 @@ import Schedule from './Schedule';
 import { Autocomplete } from '@material-ui/lab';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Send } from '@material-ui/icons';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
@@ -216,6 +217,12 @@ export default function App(props) {
     });
   };
 
+  const removeSchedule = (id) => {
+    const new_schedules = Object.assign({}, schedules);
+    delete new_schedules[id];
+    setSchedules(new_schedules);
+  };
+
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
@@ -227,7 +234,13 @@ export default function App(props) {
 
         { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }
 
-        <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
+        <div className={classes.CRNs} style={{
+          zIndex: 99, 
+          display: "flex", 
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          marginTop: '10px',
+        }}>
 
           {FilterModal({
             open: openFilterModal,
@@ -249,18 +262,22 @@ export default function App(props) {
           })}
 
           <Button 
-            style={{ margin: "15px", width: "100%" }} 
-            variant="outlined" 
+            // variant="outlined" 
+            color="primary"
+            variant="contained"
+            style={{width: "100%"}}
+            endIcon={<Send />}
             onClick={() => {
               setOpenCRNsModal(true);
             }}
           >Export</Button>
+          <div style={{width: "15px"}}/>
           {/* <Button onClick={() => {
             const frank = (new Date()).getSeconds();
             addSchedulesEntry({id:frank, display: (new Date()).getSeconds(), schedule: []})
             console.log(schedules)
           }}>Save</Button> */}
-          { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses}) }
+          { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses, removeSchedule}) }
         </div>
       </div>
       <div/>

@@ -30,8 +30,15 @@ const FilterModal = (props) => {
                 <Paper style={{
                     padding: "20px"
                 }}> 
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        flexDirection: "column",
+                    }}>
                     { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, noFilterIcon: true}) }
                     { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
+                    </div>
                 </Paper>
             </Fade>
         </Modal>

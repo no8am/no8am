@@ -12,7 +12,7 @@ const BigBox = (props) => {
     return (
     <Autocomplete
         size="small"
-        style={{margin: '15px'}}
+        style={{ marginTop: "15px", width: "100%" }}
         autoHighlight
         filterSelectedOptions
         multiple
@@ -25,7 +25,7 @@ const BigBox = (props) => {
         renderInput={params => (
         <TextField
         {...params}
-        label="Add Course (click course to select section)"
+        label="Add course"
         variant="outlined"
         InputProps={{
             ...params.InputProps,
