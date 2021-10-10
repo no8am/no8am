@@ -9,7 +9,7 @@ const Filters = (props) => {
     const {setRequirements, requirementList, setInstructor, instructorList} = props
 
     return (
-        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", margin: "0px 15px"}}>
+        <div className = "autoCompleteWrapper" style={{ display: "flex", flexDirection: "column", flexWrap: "wrap", width: "100%"}}>
             <Autocomplete
                 size="small"
                 autoHighlight
@@ -19,7 +19,7 @@ const Filters = (props) => {
                 onChange={(e, reqs) => setRequirements(reqs) }
                 id="add-requirement-autocomplete"
                 options={requirementList}
-                style={{marginRight: '5px', width: "100%"}}
+                style={{width: "100%", paddingTop: "10px"}}
                 renderInput={params => <TextField {...params} label="Requirements" variant="outlined" />}
                 renderOption={(option, { inputValue }) => {
                     // Highlight parts of text that matches input
@@ -43,7 +43,7 @@ const Filters = (props) => {
                 onChange={(e, instructor) => setInstructor(instructor) }
                 id="add-instructor-autocomplete"
                 options={instructorList}
-                style={{marginLeft: '5px', width: "100%"}}
+                style={{width: "100%", paddingTop: "10px"}}
                 renderInput={params => <TextField {...params} label="Instructor" variant="outlined" />}
                 renderOption={(option, { inputValue }) => {
                     // Highlight parts of text that matches input

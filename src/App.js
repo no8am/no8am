@@ -1,28 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import Schedule from './Schedule';
-import { Autocomplete } from '@material-ui/lab';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
+import { Button, TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { Send } from '@material-ui/icons';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
-import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns, CRNcolumns } from './utils';
+import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns } from './utils';
 import { useStyles } from './comps/styles';
 
-import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
+import { seats, instructorList, requirementList, deliveryMethodMap } from './data';
 import CRNsModal from './comps/CRNsModal';
 import SectionModal from './comps/SectionModal';
 import FilterModal from './comps/FilterModal';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
-import { set } from 'lodash';
 
 import NewSchedule from './comps/NewSchedule';
 import BigBox from './comps/search/BigBox';
-import Filters from './comps/search/Filters';
 import BottomText from './comps/BottomText';
-
+import ScheduleSelect from './comps/ScheduleSelect';
 
 const searchClient = algoliasearch(
   ALGOLIA_APP_ID, 
@@ -50,6 +44,7 @@ export default function App(props) {
   const [query, setQuery] = useState(''); // Algolia search queary
   const [course, setCourse] = useState({}); // for section selection of a single course
   const [courses, setCourses] = useState([]); // currently selected courses on schedule
+  const [schedules, setSchedules] = useState({}); // object of schedules
   const [sections, setSections] = useState([]); // currently selected course sections
   const [classHour, setClassHour] = useState(0); // total class hours
   const [intervals, setIntervals] = useState([]); // a list of [start, end] periods for shcedule display
@@ -98,9 +93,7 @@ export default function App(props) {
     const url = window.location.href;
     const array = url.split('/');
     const uid = array[array.length - 1];
-    if (uid) {
-      setUID(uid);      
-    }
+    if (uid) { setUID(uid); }
   }, [])
 
   const collection = useFirestore().collection('2021spring');
@@ -113,20 +106,26 @@ export default function App(props) {
       return
     }
     setIsSaving(true);
-    const result = await collection.add({ courses });
+    const result = await collection.add({ courses, schedules }); 
     setUID(result.id);
     setIsSaving(false);
     setHasSaved(true);
-  }, [isSaving, courses, collection])
+  }, [isSaving, courses, schedules, collection])
 
-  // Load schedule
-  const scheduleData = useFirestoreDocData(collection.doc(uid), {
+    // Load schedule
+  const UIDData = useFirestoreDocData(collection.doc(uid), {
     startWithValue: {
-      courses: []
+      schedules: {},
+      courses: [],
     }
-  }).courses;
+  });
 
-  useEffect(() => { if (scheduleData) { setCourses(scheduleData); } }, [scheduleData])
+  useEffect(() => {
+    if (UIDData) { 
+      if ("schedules" in UIDData) { setSchedules(UIDData.schedules); }
+      if ("courses" in UIDData) { setCourses(UIDData.courses); }
+    } 
+  }, [UIDData])
     
   // Clear out schedule preview when modal is closed
   useEffect(() => {
@@ -193,6 +192,32 @@ export default function App(props) {
     })();
   }, [query, requirements, instructor, deliveryFormat]);
 
+  const addSchedulesEntry = (args) => {
+    setSchedules(prevState => (
+      {
+        ...prevState, 
+        [args.id]: args
+      }
+    ));
+  };
+
+  const updateScheduleName = (id, name) => {
+    setSchedules(prevState => ({...prevState, [id]: {...prevState[id], name}}));
+  };
+
+  const updateScheduleCourses = (id) => {
+    const vary = Object.assign({}, schedules[id])
+    setCourses(() => {
+      return vary.courses
+    });
+  };
+
+  const removeSchedule = (id) => {
+    const new_schedules = Object.assign({}, schedules);
+    delete new_schedules[id];
+    setSchedules(new_schedules);
+  };
+
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
       <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
@@ -202,37 +227,48 @@ export default function App(props) {
           <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
 
-        { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal}) }
-        { Filters({requirementList, setRequirements, instructorList, setInstructor}) }
-        { BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}) }
+        { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }
 
-        <div className={classes.CRNs} style={{zIndex: 99, display: "flex"}}>
+        <div className={classes.CRNs} style={{
+          zIndex: 99, 
+          display: "flex", 
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          marginTop: '10px',
+        }}>
 
-          {/* {FilterModal({
+          {FilterModal({
             open: openFilterModal,
-            handleClose: () => setOpenFilterModal(false),
-          })} */}
+            handleClose: () => {
+              setInstructor(null);
+              setRequirements([]);
+              setOpenFilterModal(false);
+            },
+            courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, 
+            requirementList, setRequirements, instructorList, setInstructor,
+            bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits})
+          })}
 
           {CRNsModal({
             open: openCRNsModal,
             handleClose: () => setOpenCRNsModal(false),
             CRNs, classes, modalWidth,
+            bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}),
           })}
 
-          {/* <Button 
-            style={{ margin: "15px", width: "100%" }} 
-            variant="outlined" 
-            onClick={() => { setOpenFilterModal(true); }}
-          >Modal test</Button> */}
-          <Button 
-            style={{ margin: "15px", width: "100%" }} 
-            variant="outlined" 
-            disabled={CRNs.length <= 0}
-            onClick={() => {
-              CRNs.length > 0 ? setOpenCRNsModal(true) : setOpenCRNsModal(false);
-            }}
-          >Show CRN's</Button>
-
+          { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses, removeSchedule}) }
+          <div style={{width: "15px"}}/>
+          <Tooltip title="Create link; view CRNS, credit hours, and class hours" arrow>
+            <Button 
+              color="primary"
+              variant="contained"
+              style={{width: "100%"}}
+              endIcon={<Send />}
+              onClick={() => {
+                setOpenCRNsModal(true);
+              }}
+            >Export</Button>
+          </Tooltip>
         </div>
       </div>
       <div/>

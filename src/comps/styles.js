@@ -9,15 +9,15 @@ const useStyles = makeStyles(theme => ({
     },
   },
   bottomText: {
-    position: "absolute",
-    bottom: 0,
-    color: "white",
-    [theme.breakpoints.down('xs')]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up('sm')]: {
-        width: "40%",   
-      },
+    // position: "absolute",
+    // bottom: 0,
+    // color: "white",
+    // [theme.breakpoints.down('xs')]: {
+    //     width: "100%",
+    //   },
+    //   [theme.breakpoints.up('sm')]: {
+    //     width: "40%",   
+    //   },
   },
   shamelessplug: {
     textAlign: "center",
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     flex: 1,
     minHeight: "700px",
+    margin: "0px 15px"
   },
   modal: { },
   paper: {
