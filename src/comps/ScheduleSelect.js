@@ -50,7 +50,7 @@ const ScheduleSelect = ({courses, schedules, addSchedulesEntry, updateScheduleNa
       <FormControl fullWidth>
         <Menu
           label="Selected schedule"
-          variant="outlined"
+          // variant="outlined"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleClose}
