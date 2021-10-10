@@ -193,16 +193,12 @@ export default function App(props) {
   }, [query, requirements, instructor, deliveryFormat]);
 
   const addSchedulesEntry = (args) => {
-    console.log("adding entry for args:")
-    console.log(args)
-    console.log(schedules)
     setSchedules(prevState => (
       {
         ...prevState, 
         [args.id]: args
       }
     ));
-    console.log(schedules)
   };
 
   const updateScheduleName = (id, name) => {
