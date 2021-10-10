@@ -1,27 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import Schedule from './Schedule';
-import { Autocomplete } from '@material-ui/lab';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Chip, Modal, Backdrop, Fade, Collapse, Box, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, TableCell, TableRow, Tooltip } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
-import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns, CRNcolumns } from './utils';
+import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns } from './utils';
 import { useStyles } from './comps/styles';
 
-import { seats, instructorList, requirementList, deliveryMethodList, deliveryMethodMap } from './data';
+import { seats, instructorList, requirementList, deliveryMethodMap } from './data';
 import CRNsModal from './comps/CRNsModal';
 import SectionModal from './comps/SectionModal';
 import FilterModal from './comps/FilterModal';
 import algoliasearch from 'algoliasearch/lite';
 import { useFirestoreDocData, useFirestore } from 'reactfire';
-import { set } from 'lodash';
 
 import NewSchedule from './comps/NewSchedule';
 import BigBox from './comps/search/BigBox';
-import Filters from './comps/search/Filters';
 import BottomText from './comps/BottomText';
 import ScheduleSelect from './comps/ScheduleSelect';
 
@@ -267,23 +260,19 @@ export default function App(props) {
             bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}),
           })}
 
-          <Button 
-            // variant="outlined" 
-            color="primary"
-            variant="contained"
-            style={{width: "100%"}}
-            endIcon={<Send />}
-            onClick={() => {
-              setOpenCRNsModal(true);
-            }}
-          >Export</Button>
-          <div style={{width: "15px"}}/>
-          {/* <Button onClick={() => {
-            const frank = (new Date()).getSeconds();
-            addSchedulesEntry({id:frank, display: (new Date()).getSeconds(), schedule: []})
-            console.log(schedules)
-          }}>Save</Button> */}
           { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses, removeSchedule}) }
+          <div style={{width: "15px"}}/>
+          <Tooltip title="Create link; view CRNS, credit hours, and class hours" arrow>
+            <Button 
+              color="primary"
+              variant="contained"
+              style={{width: "100%"}}
+              endIcon={<Send />}
+              onClick={() => {
+                setOpenCRNsModal(true);
+              }}
+            >Export</Button>
+          </Tooltip>
         </div>
       </div>
       <div/>

@@ -11,11 +11,10 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { Create, Save, Delete } from "@material-ui/icons";
+import { Create, Save, Delete, SwapHoriz } from "@material-ui/icons";
 
 const ScheduleSelect = ({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses, removeSchedule}) => {  
 
-  // on save (that is, when the user clicks the save button)
   const saveSchedule = (event: Event) => {
     const date = new Date();
     event.preventDefault();
@@ -27,26 +26,22 @@ const ScheduleSelect = ({courses, schedules, addSchedulesEntry, updateScheduleNa
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClick = (event) => { setAnchorEl(event.currentTarget); };
+  const handleClose = () => { setAnchorEl(null); };
 
   return (
     <div className="schedule-select" style={{width: "100%"}}>
-      <Button
-        onClick={handleClick}
-        color="secondary"
-        variant="contained"
-        endIcon={<Save />}
-        style={{width: "100%", height: "100%"}}
-      >
-        Schedules
-      </Button>
+      <Tooltip title="View, switch and save schedules" arrow>
+        <Button
+          onClick={handleClick}
+          color="secondary"
+          variant="contained"
+          endIcon={<SwapHoriz />}
+          style={{width: "100%", height: "100%"}}
+        >
+          Schedules
+        </Button>
+      </Tooltip>
       <FormControl fullWidth>
         <Menu
           label="Selected schedule"
