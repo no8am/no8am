@@ -26,7 +26,9 @@ const firebaseConfig = {
 function FirebaseApp() {
   return (
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <SuspenseWithPerf fallback={<CircularProgress color="inherit" size={20} />} traceId={'load-app-status'}>
+      <SuspenseWithPerf fallback={
+        <CircularProgress color="inherit" size={20} />
+      } traceId={'load-app-status'}>
         <App />
       </SuspenseWithPerf>
     </FirebaseAppProvider>
