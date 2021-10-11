@@ -7,7 +7,7 @@ import { Room, Person } from '@material-ui/icons';
 
 const NewSchedule = (props) => {
 
-  const { intervals, width, height, courses, openCourseModal } = props;
+  const { intervals, tempIntervals, width, height, courses, openCourseModal } = props;
 
   const onEventRendered = React.useCallback((args) => {
     let categoryColor = args.data.CategoryColor;
@@ -16,6 +16,8 @@ const NewSchedule = (props) => {
       backgroundColor: categoryColor,
     });
   }, []);
+
+  // combine intervals and tempIntervals, adjusting color for tempIntervals
 
   const data = intervals.map(interval => {
     let weekDayNum;
