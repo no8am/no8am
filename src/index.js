@@ -27,7 +27,12 @@ function FirebaseApp() {
   return (
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
       <SuspenseWithPerf fallback={
-        <CircularProgress color="inherit" size={20} />
+        <CircularProgress color="inherit" size={40} style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)"}} 
+        />
       } traceId={'load-app-status'}>
         <App />
       </SuspenseWithPerf>
