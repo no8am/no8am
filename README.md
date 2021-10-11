@@ -1,27 +1,26 @@
-# no8am.v3α
+# 'ray schedule
 <p align="center">
   A super fun, super cool new scheduling system, to help Bucknell students get their schedules together.</br>
   https://rayschedule.com </br>
-  <!-- <img src="https://github.com/icewing1996/no8am-2/blob/master/src/screenshot.png"> -->
 </p>
 
-## Notes
-Please contact us if the database needs to be updated, one must pull manually from the current CourseInformation site.
+## Bugs?
 
-## Current Bugs
-
-* Some courses have duplicates in the list, even though all the data is accurate.
-* Courses scheduled at the same time overlap, instead of appearing side-by-side.
-* The CRN table doesn't look right.
+Email us at [hi@rayschedule.com](mailto:hi@rayschedule.com).
 
 ## [To-do list](https://github.com/no8am/no8am/issues)
 
 ## Develop
 ```bash
-git clone https://github.com/ndemarchis/no8am-3 && cd no8am-3
+git clone https://github.com/no8am/no8am
+cd no8am
 npm install
 npm start
 ```
+
+## About
+
+Currently maintained by [@ndemarchis](https://github.com/ndemarchis). If you'd like to help develop, [send us an email](mailto:hi@rayschedule.com)! 
 
 ## License
 This project is licensed under the terms of the The GNU General Public License v3.0.
