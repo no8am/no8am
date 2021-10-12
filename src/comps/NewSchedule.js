@@ -94,7 +94,7 @@ const NewSchedule = (props) => {
     })
 
     return (
-      <div className="bullet-point-info" style={{padding: "10px"}}>
+      <div className="bullet-point-info" style={{padding: "10px", fontSize: "10pt"}}>
         <div style={{
             display: "flex",
             alignItems: "center",

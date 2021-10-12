@@ -10,6 +10,6 @@ for (let i = 0; i < courseListRaw.length; i++) {
     }
   }
 
-  let quotedAndCommaSeparated = "'" + instructorList.join("','") + "'"
+  let quotedAndCommaSeparated = '"' + instructorList.join('","') + '"'
 
   console.log(quotedAndCommaSeparated.toString())
