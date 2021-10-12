@@ -17,9 +17,16 @@ const NewSchedule = (props) => {
     });
   }, []);
 
-  // combine intervals and tempIntervals, adjusting color for tempIntervals
+  const fullIntervals = () => {
+    const tempIntervalsTrans = tempIntervals.map(interval => {
+        let intCopy = { ...interval };
+        intCopy.color += "99"
+        return intCopy;
+      })
+    return intervals.concat(tempIntervalsTrans);
+  }
 
-  const data = intervals.map(interval => {
+  const data = fullIntervals().map(interval => {
     let weekDayNum;
     switch (interval.weekDay) {
       case "M":
