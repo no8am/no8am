@@ -16,39 +16,38 @@ a:hover {
   text-decoration: underline;
 }
 
+.e-schedule .e-vertical-view .e-header-cells .e-header-day,
+.MuiTableCell-root,
 .chip {
   font-family: 'Prompt';
 }
 
-.MuiTableCell-root {
-  font-family: "Prompt"
-}
-
-div.e-header-date.e-navigate {
+div.e-date-time,
+div.e-header-date.e-navigate,
+div.e-schedule-toolbar-container {
   display: none !important;
 }
-
-div.e-schedule-toolbar-container{
-  display: none !important;
-}
-
-div.e-header-day {
-  font-weight: 700;
-}
-
 div.e-appointment {
   font-family: "Prompt";
   padding: 5px !important;
   border-radius: 10px !important;
 }
 
+div.e-header-day,
 div.e-subject {
   font-weight: 700 !important;
 }
 
-div.e-date-time {
-  display: none !important;
+.e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
+  height: 3.25vh !important;
 }
 
 @media only screen and (max-width: 600px) {
+  .e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
+    height: 40px !important;
+  }
+
+  .e-schedule .e-vertical-view .e-day-wrapper .e-appointment .e-time, .e-schedule .e-vertical-view .e-day-wrapper .e-appointment .e-location {
+    display: none;
+  }
 }
