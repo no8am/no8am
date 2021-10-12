@@ -3,7 +3,7 @@ import './NewSchedule.css'
 
 import { ScheduleComponent, WorkWeek, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { Button } from '@material-ui/core';
-import { Room, Person } from '@material-ui/icons';
+import { Room, Person, Schedule } from '@material-ui/icons';
 
 const NewSchedule = (props) => {
 
@@ -94,7 +94,17 @@ const NewSchedule = (props) => {
     })
 
     return (
-      <div className="location" style={{padding: "10px"}}>
+      <div className="bullet-point-info" style={{padding: "10px"}}>
+        <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "left",
+          }}>
+            <Schedule style={{padding: "10px 10px 10px 0px"}}/>
+            <span>
+              {props.StartTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - {props.EndTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+            </span>
+          </div>
         {(building) && (
           <div style={{
             display: "flex",
@@ -147,6 +157,9 @@ const NewSchedule = (props) => {
       height = {height}
       className = "schedule"
       readonly = {true}
+      timeScale={{ enable: true, interval: 60, slotCount: 2 }}
+      minDate = {new Date(2018, 0, 1)}
+      maxDate = {new Date(2018, 0, 5)}
       selectedDate = {new Date(2018, 0, 1)}
       eventRendered = {onEventRendered}
       eventSettings = {{ 
