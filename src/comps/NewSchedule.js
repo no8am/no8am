@@ -145,7 +145,7 @@ const NewSchedule = (props) => {
       }}>
         {bulletPoints(props)}
         <div className="description" style={{padding: "15px"}}>
-          <Button variant="outlined" color="primary" onClick={() => {handleOpenCourseModal(props)}}>More</Button>
+          <Button variant="outlined" color="primary" onClick={() => {handleOpenCourseModal(props)}}>Edit</Button>
         </div> 
       </div>
     )

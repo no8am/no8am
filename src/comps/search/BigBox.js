@@ -1,52 +1,82 @@
 import React from 'react'
 import { Autocomplete } from '@material-ui/lab';
-import { TextField, Chip, Tooltip } from '@material-ui/core';
+import { TextField, Chip, Tooltip, IconButton } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
 const BigBox = (props) => {
 
     const {courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal} = props;
+    const noFilterIcon = props?.noFilterIcon;
+
+    const useStyles = makeStyles(theme => ({
+      bigAutocompleteWrap: {
+        display: "flex",
+        alignItems: "flex-start", 
+        flexDirection: "column", 
+        width: "100%",
+        '& > div': {
+          position: "relative",
+        }
+      },
+
+    }));
+    const classes = useStyles(props);
         
     return (
-    <Autocomplete
+    <div className={classes.bigAutocompleteWrap}>
+      <Autocomplete
         size="small"
-        style={{ marginTop: "15px", width: "100%" }}
+        style={{ 
+          marginTop: "15px", 
+          width: "100%",
+          '& div.MuiAutocomplete-popperDisablePortal': {
+            position: 'unset',
+          }
+        }}
+        disablePortal={noFilterIcon}
         autoHighlight
         filterSelectedOptions
         multiple
         value={courses}
+        {...noFilterIcon ? {open: true} : {}}
         onChange={(e, courses) => setCourses(courses) }
         onInputChange={(e, query) => setQuery(query) }
         id="add-course-autocomplete"
         options={filteredCourseList}
         getOptionLabel={option => option.title}
         renderInput={params => (
-        <TextField
-        {...params}
-        label="Add course"
-        variant="outlined"
-        InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-            <React.Fragment>
-                {params.InputProps.endAdornment}
-                {!props?.noFilterIcon && (
+          <TextField
+            {...params}
+            label="Add course"
+            variant="outlined"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {params.InputProps.endAdornment}
+                  {!noFilterIcon && (
                     <Tooltip title="Filter" arrow>
-                        <FilterList onClick={() => setOpenFilterModal(true)} style={{cursor: "pointer"}}/>
+                      <IconButton
+                        onClick={() => setOpenFilterModal(true)}
+                        size="small"
+                      >
+                        <FilterList/>
+                      </IconButton>
                     </Tooltip>
-                )}
-            </React.Fragment>
+                  )}
+                </React.Fragment>
                 ),
-            }}
-            />
+              }}
+          />
         )}
         renderOption={(option, { inputValue }) => {
             const matches = match(option.title, inputValue);
             const parts = parse(option.title, matches);
             return (
-            <div>
+            <div className="parts">
                 {parts.map((part, index) => (
                 <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
                     {part.text}
@@ -70,7 +100,8 @@ const BigBox = (props) => {
                 {...getTagProps({ index })} />
             ))
         }
-    />
+      />
+    </div>
 )}
 
 export default BigBox;
