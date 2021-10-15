@@ -38,6 +38,7 @@ export default function App(props) {
   const modalWidth = width < 600 ? width : width * 0.5;
   const scheduleWidth = width < 600 ? width : width * 0.6;
   const appHeight = width < 600 ? height * 2 : height;
+  const scheduleHeight = width < 600 ? 1500 : height;
   const classes = useStyles();
   
   // Courses
@@ -245,7 +246,7 @@ export default function App(props) {
               setOpenFilterModal(false);
             },
             courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, 
-            requirementList, setRequirements, instructorList, setInstructor,
+            requirementList, setRequirements, instructorList, setInstructor, modalWidth,
             bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits})
           })}
 
@@ -277,7 +278,7 @@ export default function App(props) {
         tempIntervals={tempIntervals}
         margin={margin} 
         width={scheduleWidth} 
-        height={height}
+        height={scheduleHeight}
         className={classes.schedule}
         courses={courses}
         openCourseModal = {handleOpenSectionModal}

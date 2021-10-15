@@ -21,6 +21,7 @@ const CRNsModal = (props) => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}
+      style={{width: modalWidth}}
       open={open}
       onClose={handleClose}
       closeAfterTransition
