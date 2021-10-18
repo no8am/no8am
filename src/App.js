@@ -224,7 +224,7 @@ export default function App(props) {
 
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '45px'}}>
           <h1 style={{margin: 0}}>&lsquo;ray schedule</h1>
-          <h6 style={{margin: 0, fontWeight: 400}}><i>the student-made course scheduling solution for Bucknell University</i></h6>
+          <h6 style={{margin: 0, fontWeight: 400}}><i>a.k.a., <b>no8am</b><br />the student-made course scheduling solution for Bucknell University</i></h6>
         </div>
 
         { BigBox({courses, setCourses, setQuery, filteredCourseList, handleOpenSectionModal, setOpenFilterModal}) }

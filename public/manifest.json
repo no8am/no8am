@@ -1,15 +1,19 @@
 {
-  "short_name": "no8am",
-  "name": "no8am²",
-  "icons": [
-    {
-      "src": "bucknell.ico",
-      "sizes": "18x18",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
+    "name": "",
+    "short_name": "",
+    "icons": [
+       {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+       },
+       {
+        "src": "/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+        }
+    ],
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "display": "standalone"
+ }
