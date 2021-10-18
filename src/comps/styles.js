@@ -44,7 +44,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     flex: 1,
     minHeight: "700px",
-    margin: "0px 15px"
+    margin: "0px 15px",
+    "@media only screen and (max-width: 600px)": {
+      margin: "0 auto",
+      width: "90%",
+    },
   },
   modal: { },
   paper: {

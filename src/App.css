@@ -38,15 +38,13 @@ div.e-subject {
   font-weight: 700 !important;
 }
 
-.e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
-  height: 3.25vh !important;
+@media only screen and (min-width: 601px) {
+  .e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
+    height: 3.25vh !important;
+  }
 }
 
 @media only screen and (max-width: 600px) {
-  .e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
-    height: 40px !important;
-  }
-
   .e-schedule .e-vertical-view .e-day-wrapper .e-appointment .e-time, .e-schedule .e-vertical-view .e-day-wrapper .e-appointment .e-location {
     display: none;
   }

@@ -31,7 +31,7 @@ const CRNsModal = (props) => {
       }}
       >
         <Fade in={open}>
-          <Paper style={{width: "40%", padding: "20px"}}>
+          <Paper style={{padding: "20px"}}>
             <div>
               {CRNs.length > 0  && (
                 <TableContainer 

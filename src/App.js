@@ -34,11 +34,10 @@ const margin = {
 
 export default function App(props) {
   const { width, height } = useWindowSize();
-  const courseSelectorWidth = width < 600 ? width : width * 0.4;
   const modalWidth = width < 600 ? width : width * 0.5;
   const scheduleWidth = width < 600 ? width : width * 0.6;
   const appHeight = width < 600 ? height * 2 : height;
-  const scheduleHeight = width < 600 ? 1500 : height;
+  const scheduleHeight = "fit-content";
   const classes = useStyles();
   
   // Courses
@@ -221,7 +220,7 @@ export default function App(props) {
 
 	 return (
     <div className={classes.app} style={{ width, height: appHeight }}>
-      <div className={classes.courseSelector} style={{ width: courseSelectorWidth, height}}>
+      <div className={classes.courseSelector} >
 
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '45px'}}>
           <h1 style={{margin: 0}}>&lsquo;ray schedule</h1>
