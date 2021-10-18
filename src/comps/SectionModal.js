@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Backdrop, Fade } from '@material-ui/core';
-import { Info } from '@material-ui/icons';
+import { Info, Close } from '@material-ui/icons';
 
 import { parseMeetingTimes } from '../utils';
 
@@ -61,6 +61,12 @@ const SectionModal = (props) => {
                   }
                 }} 
                 style={{cursor: 'pointer', display: 'inline-block', padding: '0px 20px'}}
+              />
+              <Close 
+                onClick={() => {
+                  handleCloseSectionModal()
+                }}
+                style={{cursor: 'pointer', display: 'inline-block', padding: '0px 20px', marginLeft: 'auto'}}
               />
             </div>
             {course.sections && course.sections[0].Footnote && 

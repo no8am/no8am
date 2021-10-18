@@ -36,7 +36,7 @@ export default function App(props) {
   const { width, height } = useWindowSize();
   const modalWidth = width < 600 ? width : width * 0.5;
   const scheduleWidth = width < 600 ? width : width * 0.6;
-  const appHeight = width < 600 ? height * 2 : height;
+  const appHeight = width < 600 ? "fit-content" : height;
   const scheduleHeight = "fit-content";
   const classes = useStyles();
   
