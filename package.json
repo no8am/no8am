@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^15.4.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -19,7 +20,9 @@
     "autosuggest-highlight": "^3.1.1",
     "browserlist": "^1.0.1",
     "caniuse-lite": "^1.0.30001264",
+    "contentful": "^9.1.3",
     "d3-scale-chromatic": "^1.5.0",
+    "dompurify": "^2.3.3",
     "esm": "^3.2.25",
     "firebase": "^7.24.0",
     "framer-motion": "^1.11.1",

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import { Button, TableCell, TableRow, Tooltip } from '@material-ui/core';
-import { Send } from '@material-ui/icons';
+import { Send, Help } from '@material-ui/icons';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_API, ALGOLIA_INDEX_NAME } from './constants';
 import { parseMeetingTimes, parseCredits, useWindowSize, createRow, columns } from './utils';
 import { useStyles } from './comps/styles';
@@ -17,6 +17,7 @@ import NewSchedule from './comps/NewSchedule';
 import BigBox from './comps/search/BigBox';
 import BottomText from './comps/BottomText';
 import ScheduleSelect from './comps/ScheduleSelect';
+import InfoPage from './comps/InfoPage';
 
 const searchClient = algoliasearch(
   ALGOLIA_APP_ID, 
@@ -62,6 +63,7 @@ export default function App(props) {
   const [openSectionModal, setOpenSectionModal] = useState(false);
   const [openCRNsModal, setOpenCRNsModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [openInfoPage, setOpenInfoPage] = useState(false);
   const [rows, setRows] = useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
 
@@ -256,6 +258,13 @@ export default function App(props) {
             bottomText: BottomText({classes, saveSchedule, hasSaved, uid, classHour, credits}),
           })}
 
+          {InfoPage({
+            open: openInfoPage, 
+            handleClose: () => setOpenInfoPage(false), 
+            classes, 
+            modalWidth
+          })}
+
           { ScheduleSelect({courses, schedules, addSchedulesEntry, updateScheduleName, updateScheduleCourses, removeSchedule}) }
           <div style={{width: "15px"}}/>
           <Tooltip title="Create link; view CRNS, credit hours, and class hours" arrow>
@@ -269,6 +278,15 @@ export default function App(props) {
               }}
             >Export</Button>
           </Tooltip>
+          <div style={{width: "15px"}}/>
+          <Button
+            variant="contained"
+            style={{width: "100%"}}
+            endIcon={<Help />}
+            onClick={() => {
+              setOpenInfoPage(true);
+            }}
+          >Help</Button>
         </div>
       </div>
       <div/>
