@@ -180,14 +180,21 @@ export default function App(props) {
       const instructor_filter = instructor ? `sections.Instructors.Display:"${instructor}"` : '';
       const delivery_filter = deliveryFormat ? `sections.DeliveryMethods:"${deliveryMethodMap[deliveryFormat]}"` : '';
       
-      let filters = [];
-      if (CCR_filter) filters.push(CCR_filter);
-      if (instructor_filter) filters.push(instructor_filter);
-      if (delivery_filter) filters.push(delivery_filter);
-      filters = filters.join(' AND ')
+      // let filters = [];
+      // if (CCR_filter) filters.push(CCR_filter);
+      // if (instructor_filter) filters.push(instructor_filter);
+      // if (delivery_filter) filters.push(delivery_filter);
       
+      // algoliaIndex
+      //   .search(query, {filters: filters.join(' AND ')})
+      //   .then(({ hits }) => {
+      //     setFilteredCourseList(hits)
+      //   })
+
+      const tempQuery = (instructor ? instructor : '') + (CCR_codes ? ` ${CCR_codes.join(' ')}` : '');
+
       algoliaIndex
-        .search(query, { filters })
+        .search(tempQuery, {query: tempQuery})
         .then(({ hits }) => {
           setFilteredCourseList(hits)
         })
