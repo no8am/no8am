@@ -18,6 +18,7 @@ import BigBox from './comps/search/BigBox';
 import BottomText from './comps/BottomText';
 import ScheduleSelect from './comps/ScheduleSelect';
 import InfoPage from './comps/InfoPage';
+import ConstructionModal from './comps/ConstructionModal';
 
 const searchClient = algoliasearch(
   ALGOLIA_APP_ID, 
@@ -63,6 +64,7 @@ export default function App(props) {
   const [openSectionModal, setOpenSectionModal] = useState(false);
   const [openCRNsModal, setOpenCRNsModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [openConstructionModal, setOpenConstructionModal] = useState(true);
   const [openInfoPage, setOpenInfoPage] = useState(false);
   const [rows, setRows] = useState([]);
   const CCCs = course.sections && course.sections[0].Reqs.map(req => req.Code).join(", ");
@@ -320,6 +322,11 @@ export default function App(props) {
         handleCloseSectionModal,
         handleSectionChange,
       }) }
+      {ConstructionModal({
+          open: openConstructionModal,
+          handleClose: () => setOpenConstructionModal(false),
+          modalWidth
+      })}
     </div>
   )
 }
