@@ -1,3 +1,9 @@
+# This repository has been archived.
+
+Check out [no8am/ray-schedule](https://github.com/no8am/ray-schedule) at [rayschedule.com](https://rayschedule.com) for the currently maintained version.
+
+---
+
 # 'ray schedule
 <p align="center">
   A super fun, super cool new scheduling system, to help Bucknell students get their schedules together.</br>
